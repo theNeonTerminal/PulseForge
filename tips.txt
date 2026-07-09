@@ -1,0 +1,36 @@
+1. Explain your tool:
+EG:
+
+<h1>Image Compressor</h1>
+What is an image compressor?
+Why compress images?
+How does image compression work?
+JPEG vs PNG compression
+Frequently asked questions
+
+2. Target long tail keywords
+NOT
+calculator
+image converter
+pdf tool
+
+YES
+convert jpg to webp online
+binary to decimal converter
+json formatter online
+hex color to rgb converter
+markdown table generator
+base64 image decoder
+
+3. Url Readable??
+site.com/json-formatter
+site.com/base64-decoder
+site.com/hex-to-rgb
+
+4. Minimal JavaScript
+No giant frameworks unless needed
+Good Core Web Vitals
+Mobile-friendly design
+
+5. Offer related tools -> more clicks
+
