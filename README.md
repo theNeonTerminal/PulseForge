@@ -4,16 +4,6 @@ A fully static site of small, fast utility tools for programming, Arduino,
 ESP32, electronics, and general developer/maker work. Plain HTML, SCSS, and
 vanilla JavaScript — no build framework, no backend.
 
-## Name
-
-**PulseForge** — "pulse" ties directly to PWM/signal-based embedded work (the
-site's flagship tool is a PWM calculator), and "forge" signals a maker/builder
-space for tools. Distinct from generic "ZapTools"/"DevTools"-style names.
-
-Other names considered: ByteBench, LogicBench, EmbedLab, HexForge, VoltNest,
-CodeCircuit, MakerGrid, NexaTools, CoreUtils, DevNest, BitFoundry, ToolNova,
-CircuitAtlas, ByteWorks, SparkBench.
-
 ## Structure
 
 ```
@@ -81,22 +71,6 @@ on every page (no markup duplication needed) and persists font size, font
 family (six presets or any typed font name), cursor size, color scheme, and
 accent under one `localStorage` key (`pulseforge:a11y`). The bubble is
 draggable and snaps to the nearest left/right edge; its position persists too.
-
-## Rebuilding CSS
-
-SCSS is compiled with [Dart Sass](https://sass-lang.com/dart-sass/). From the
-project root:
-
-```bash
-npm install -g sass
-sass styles.scss styles.css
-sass tools/esp32-ledc-pwm/styles.scss tools/esp32-ledc-pwm/styles.css
-sass tools/esp32-timer-interrupt/styles.scss tools/esp32-timer-interrupt/styles.css
-sass tools/esp32-gpio-reference/styles.scss tools/esp32-gpio-reference/styles.css
-```
-
-Re-run the relevant command after editing any `.scss` file — browsers can't
-read Sass directly, so `styles.css` is what the HTML actually loads.
 
 ## Adding a new tool
 
