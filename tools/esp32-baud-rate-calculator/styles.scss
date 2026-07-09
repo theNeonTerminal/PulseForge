@@ -1,0 +1,51 @@
+// =============================================================================
+// PulseForge — Baud Rate & UART Error Calculator styles
+// =============================================================================
+
+@import "../../shared/scss/variables";
+@import "../../shared/scss/mixins";
+@import "../../shared/scss/base";
+@import "../../shared/scss/utilities";
+@import "../../shared/scss/components";
+@import "../../shared/scss/accessibility";
+
+.interval-row .field__unit {
+  display: flex;
+  align-items: center;
+  padding: 0 var(--space-3);
+  flex: 0 0 auto;
+  font-size: 0.875rem;
+  color: var(--color-text-muted);
+  background: var(--color-bg-inset);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  white-space: nowrap;
+}
+
+.baud-verdict {
+  padding: var(--space-3) var(--space-4);
+  border-radius: var(--radius-md);
+  font-size: 0.9375rem;
+  line-height: 1.5;
+  border: 1px solid var(--color-border);
+  background: var(--color-bg-inset);
+
+  &:empty {
+    display: none;
+  }
+
+  &--good {
+    border-color: color-mix(in srgb, #16a34a 40%, var(--color-border));
+    background: color-mix(in srgb, #16a34a 12%, var(--color-bg-inset));
+  }
+
+  &--warn {
+    border-color: color-mix(in srgb, #d97706 45%, var(--color-border));
+    background: color-mix(in srgb, #d97706 12%, var(--color-bg-inset));
+  }
+
+  &--bad {
+    border-color: color-mix(in srgb, #dc2626 45%, var(--color-border));
+    background: color-mix(in srgb, #dc2626 12%, var(--color-bg-inset));
+  }
+}

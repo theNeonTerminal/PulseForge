@@ -1,0 +1,154 @@
+// =============================================================================
+// Reset + base element styles
+// =============================================================================
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html {
+  // Base size scales down on narrower screens so the accessibility text-size
+  // multiplier (--font-scale) can't blow up layouts on small devices —
+  // then --font-scale is applied on top of whichever base applies.
+  font-size: calc(16px * var(--font-scale));
+  -webkit-text-size-adjust: 100%;
+
+  @media (max-width: 480px) {
+    font-size: calc(14.5px * var(--font-scale));
+  }
+
+  @media (max-width: 360px) {
+    font-size: calc(13.5px * var(--font-scale));
+  }
+}
+
+html,
+body {
+  height: 100%;
+}
+
+body {
+  margin: 0;
+  font-family: var(--font-body);
+  background: var(--color-bg);
+  color: var(--color-text);
+  line-height: 1.55;
+  transition: background var(--transition-base), color var(--transition-base);
+}
+
+// Custom cursor scaling — applied as a class toggled by the a11y panel.
+body.cursor-big {
+  cursor: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='40' height='40' viewBox='0 0 24 24'%3E%3Cpath d='M4 2l14 8-6 2 4 6-3 2-4-6-4 4z' fill='%23000' stroke='%23fff'/%3E%3C/svg%3E") 4 4, auto;
+}
+
+// Reading ruler — a horizontal bar that tracks the pointer's Y position.
+.a11y-reading-ruler {
+  display: none;
+  position: fixed;
+  left: 0;
+  right: 0;
+  height: 40px;
+  margin-top: -20px;
+  background: rgba(255, 220, 60, 0.28);
+  border-top: 2px solid rgba(180, 140, 0, 0.6);
+  border-bottom: 2px solid rgba(180, 140, 0, 0.6);
+  z-index: 498;
+  pointer-events: none;
+}
+
+// Reading mask — dims everything except a fixed-height band around the pointer.
+.a11y-reading-mask {
+  display: none;
+  position: fixed;
+  left: 0;
+  right: 0;
+  background: rgba(0, 0, 0, 0.55);
+  z-index: 497;
+  pointer-events: none;
+
+  &--top {
+    top: 0;
+  }
+
+  &--bottom {
+    bottom: 0;
+  }
+}
+
+// Highlight links toggle — makes every link visually obvious.
+body.highlight-links a {
+  background: rgba(255, 220, 60, 0.35) !important;
+  text-decoration: underline !important;
+  text-decoration-thickness: 2px !important;
+  border-radius: 2px;
+}
+
+img,
+svg {
+  display: block;
+  max-width: 100%;
+}
+
+a {
+  color: var(--color-accent);
+  text-decoration: none;
+
+  &:hover {
+    color: var(--color-accent-hover);
+    text-decoration: underline;
+  }
+}
+
+button {
+  font-family: inherit;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  margin: 0 0 var(--space-3);
+  font-weight: 650;
+  line-height: 1.2;
+  letter-spacing: -0.01em;
+}
+
+p {
+  margin: 0 0 var(--space-4);
+  color: var(--color-text);
+}
+
+code, pre, kbd, samp {
+  font-family: var(--font-mono);
+}
+
+pre {
+  margin: 0;
+  overflow-x: auto;
+}
+
+hr {
+  border: none;
+  border-top: 1px solid var(--color-border);
+  margin: var(--space-6) 0;
+}
+
+::selection {
+  background: var(--color-accent-soft);
+  color: var(--color-text);
+}
+
+.skip-link {
+  position: absolute;
+  top: -48px;
+  left: var(--space-3);
+  z-index: 1000;
+  background: var(--color-accent);
+  color: var(--color-accent-contrast);
+  padding: var(--space-2) var(--space-4);
+  border-radius: var(--radius-md);
+  transition: top var(--transition-fast);
+
+  &:focus {
+    top: var(--space-3);
+  }
+}

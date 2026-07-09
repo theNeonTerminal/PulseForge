@@ -1,0 +1,47 @@
+// =============================================================================
+// Mixins
+// =============================================================================
+
+@mixin respond($bp) {
+  @if $bp == sm {
+    @media (min-width: $bp-sm) { @content; }
+  } @else if $bp == md {
+    @media (min-width: $bp-md) { @content; }
+  } @else if $bp == lg {
+    @media (min-width: $bp-lg) { @content; }
+  } @else if $bp == xl {
+    @media (min-width: $bp-xl) { @content; }
+  }
+}
+
+@mixin visually-hidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+// Consistent, accent-driven focus ring used on every interactive element.
+@mixin focus-ring {
+  &:focus-visible {
+    outline: none;
+    box-shadow: var(--focus-ring);
+  }
+}
+
+@mixin reduced-motion {
+  @media (prefers-reduced-motion: reduce) {
+    @content;
+  }
+}
+
+@mixin truncate {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}

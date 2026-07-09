@@ -1,0 +1,11 @@
+# This file is required by Google AdSense to verify you are authorized to
+# sell ad inventory on this domain.
+#
+# Once your AdSense account is approved, Google will give you a line like:
+#   google.com, pub-0000000000000000, DIRECT, f08c47fec0942fa0
+#
+# Replace the placeholder line below with your real publisher ID and remove
+# these comment lines. This file must be served at the domain root
+# (https://yourdomain.com/ads.txt) exactly as-is — no HTML wrapper.
+#
+# google.com, pub-XXXXXXXXXXXXXXXX, DIRECT, f08c47fec0942fa0

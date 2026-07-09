@@ -1,0 +1,255 @@
+// =============================================================================
+// Utilities
+// =============================================================================
+
+.container {
+  width: 100%;
+  max-width: $container-max;
+  margin-inline: auto;
+  padding-inline: var(--space-4);
+
+  @include respond(md) {
+    padding-inline: var(--space-6);
+  }
+}
+
+.visually-hidden {
+  @include visually-hidden;
+}
+
+.section {
+  padding-block: var(--space-7);
+
+  @include respond(md) {
+    padding-block: var(--space-8);
+  }
+}
+
+.section--tight {
+  padding-block: var(--space-6);
+}
+
+.eyebrow {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+  font-size: 0.8rem;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--color-text-muted);
+}
+
+.text-muted {
+  color: var(--color-text-muted);
+}
+
+// --- Buttons -----------------------------------------------------------------
+
+.btn {
+  @include focus-ring;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-2);
+  border: 1px solid transparent;
+  border-radius: var(--radius-md);
+  padding: var(--space-2) var(--space-4);
+  font-size: 0.9375rem;
+  font-weight: 550;
+  line-height: 1.2;
+  cursor: pointer;
+  max-width: 100%;
+  transition: background var(--transition-fast), border-color var(--transition-fast),
+    color var(--transition-fast), transform var(--transition-fast);
+  white-space: nowrap;
+
+  @media (max-width: 400px) {
+    white-space: normal;
+    text-align: center;
+  }
+
+  &:active {
+    transform: translateY(1px);
+  }
+
+  svg {
+    width: 1em;
+    height: 1em;
+    flex-shrink: 0;
+  }
+}
+
+.btn--primary {
+  background: var(--color-accent);
+  color: var(--color-accent-contrast);
+
+  &:hover {
+    background: var(--color-accent-hover);
+    color: var(--color-accent-contrast);
+    text-decoration: none;
+  }
+}
+
+.btn--secondary {
+  background: var(--color-surface);
+  border-color: var(--color-border);
+  color: var(--color-text);
+
+  &:hover {
+    background: var(--color-surface-hover);
+    color: var(--color-text);
+    text-decoration: none;
+    border-color: var(--color-border-strong);
+  }
+}
+
+.btn--ghost {
+  background: transparent;
+  color: var(--color-text);
+
+  &:hover {
+    background: var(--color-surface-hover);
+    color: var(--color-text);
+    text-decoration: none;
+  }
+}
+
+.btn--sm {
+  padding: var(--space-1) var(--space-3);
+  font-size: 0.8125rem;
+}
+
+.btn--icon {
+  padding: var(--space-2);
+  aspect-ratio: 1;
+}
+
+.btn--copied {
+  background: var(--color-accent) !important;
+  color: var(--color-accent-contrast) !important;
+  border-color: var(--color-accent) !important;
+}
+
+// --- Form controls -------------------------------------------------------
+
+.field {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+  margin-bottom: var(--space-4);
+}
+
+.field__label {
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: var(--color-text);
+}
+
+.field__hint {
+  font-size: 0.8125rem;
+  color: var(--color-text-muted);
+}
+
+.field__error {
+  font-size: 0.8125rem;
+  color: var(--color-error, #d1373f);
+  display: none;
+}
+
+.field.has-error .field__error {
+  display: block;
+}
+
+.field.has-error .input {
+  border-color: var(--color-error, #d1373f);
+}
+
+.input,
+.select {
+  @include focus-ring;
+  width: 100%;
+  padding: var(--space-2) var(--space-3);
+  font-size: 0.9375rem;
+  font-family: inherit;
+  color: var(--color-text);
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  transition: border-color var(--transition-fast);
+
+  &:hover {
+    border-color: var(--color-border-strong);
+  }
+}
+
+.select {
+  appearance: none;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 16 16'%3E%3Cpath fill='%2357606a' d='M4 6l4 4 4-4z'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right var(--space-3) center;
+  padding-right: var(--space-6);
+}
+
+// A number input paired with a unit <select> or a helper button — e.g. the
+// interval + unit field, or the prescaler + "Suggest" button. Stacks on very
+// narrow screens instead of squeezing both controls onto one line.
+.interval-row {
+  display: flex;
+  gap: var(--space-2);
+
+  .input {
+    flex: 1 1 auto;
+    min-width: 0;
+  }
+
+  .select {
+    flex: 0 0 auto;
+    width: auto;
+    min-width: 4.5rem;
+  }
+
+  .btn {
+    flex: 0 0 auto;
+  }
+
+  @media (max-width: 380px) {
+    flex-wrap: wrap;
+
+    .input,
+    .select,
+    .btn {
+      flex: 1 1 100%;
+    }
+  }
+}
+
+.field__checkbox-label {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  font-size: 0.9375rem;
+  color: var(--color-text);
+  cursor: pointer;
+
+  input[type="checkbox"] {
+    width: 18px;
+    height: 18px;
+    accent-color: var(--color-accent);
+    flex-shrink: 0;
+  }
+}
+
+// --- Badges / tags ---------------------------------------------------------
+
+.badge {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-1);
+  padding: 0.15em 0.6em;
+  font-size: 0.75rem;
+  font-weight: 600;
+  border-radius: 999px;
+  background: var(--color-accent-soft);
+  color: var(--color-accent);
+}

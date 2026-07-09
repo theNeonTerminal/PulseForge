@@ -1,0 +1,297 @@
+<!DOCTYPE html>
+<html lang="en" data-color-scheme="light" data-accent="indigo">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Arduino / ESP32 Baud Rate &amp; UART Error Calculator — PulseForge</title>
+  <meta
+    name="description"
+    content="Enter your MCU clock and desired baud rate to get the actual achievable UART baud rate, the error percentage, and whether it's safely within tolerance."
+  />
+  <link rel="icon" type="image/x-icon" href="../../favicon.ico" />
+  <link rel="apple-touch-icon" href="../../logo.png" />
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <a class="skip-link" href="#main">Skip to content</a>
+
+  <!-- ============================= NAVBAR ============================= -->
+  <header class="navbar">
+    <div class="container navbar__inner">
+      <a class="navbar__brand" href="../../index.html">
+        <img class="navbar__logo" src="../../logo.png" alt="" width="32" height="32" />
+        <span>PulseForge</span>
+      </a>
+
+      <nav class="navbar__nav" aria-label="Primary">
+        <a class="navbar__link" href="../../index.html">Home</a>
+        <a class="navbar__link" href="../../about.html">About</a>
+        <a class="navbar__link" href="../../contact.html">Contact</a>
+      </nav>
+
+      <div class="navbar__actions">
+        <a class="btn btn--secondary btn--sm" href="https://github.com/theNeonTerminal/PulseForge" target="_blank" rel="noopener noreferrer">
+          <svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M12 2a10 10 0 00-3.16 19.49c.5.09.68-.22.68-.48v-1.7c-2.78.6-3.37-1.34-3.37-1.34-.46-1.16-1.11-1.47-1.11-1.47-.91-.62.07-.6.07-.6 1 .07 1.53 1.03 1.53 1.03.89 1.53 2.34 1.09 2.91.83.09-.65.35-1.09.63-1.34-2.22-.25-4.56-1.11-4.56-4.94 0-1.09.39-1.98 1.03-2.68-.1-.25-.45-1.27.1-2.65 0 0 .84-.27 2.75 1.02a9.6 9.6 0 015 0c1.91-1.29 2.75-1.02 2.75-1.02.55 1.38.2 2.4.1 2.65.64.7 1.03 1.59 1.03 2.68 0 3.84-2.34 4.68-4.57 4.93.36.31.68.92.68 1.85v2.74c0 .27.18.58.69.48A10 10 0 0012 2z" fill="currentColor"/></svg>
+          GitHub
+        </a>
+        <button class="navbar__menu-toggle" type="button" aria-label="Toggle menu" aria-expanded="false" data-menu-toggle>
+          <svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M4 7h16M4 12h16M4 17h16" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+        </button>
+      </div>
+    </div>
+    <nav class="navbar__mobile-nav container" aria-label="Primary mobile" hidden data-mobile-nav>
+      <a class="navbar__link" href="../../index.html">Home</a>
+      <a class="navbar__link" href="../../about.html">About</a>
+      <a class="navbar__link" href="../../contact.html">Contact</a>
+      <a class="navbar__link" href="https://github.com/theNeonTerminal/PulseForge" target="_blank" rel="noopener noreferrer">GitHub</a>
+    </nav>
+  </header>
+
+  <main id="main">
+    <!-- ============================= PAGE HEADER ============================= -->
+    <div class="page-header">
+      <div class="container">
+        <p class="breadcrumb">
+          <a href="../../index.html">Home</a>
+          <span aria-hidden="true">/</span>
+          <span>Baud Rate &amp; UART Error Calculator</span>
+        </p>
+        <h1 class="page-header__title">Arduino / ESP32 Baud Rate &amp; UART Error Calculator</h1>
+        <p class="page-header__lede">
+          Pick your MCU's clock, type your desired baud rate, and see the actual baud rate the
+          hardware will generate — plus the error percentage and whether it's safe.
+        </p>
+      </div>
+    </div>
+
+    <!-- ============================= CALCULATOR ============================= -->
+    <section class="section container" aria-labelledby="calc-heading">
+      <div class="panel">
+        <h2 id="calc-heading" class="panel__title">Calculator</h2>
+        <p class="panel__lede">Results update as you type.</p>
+
+        <div class="calc">
+          <form class="calc__form" data-calc-form novalidate>
+            <div class="field field--full">
+              <label class="field__label" for="mcuPreset">MCU / clock source</label>
+              <select class="select" id="mcuPreset">
+                <option value="esp32-apb">ESP32 / ESP32-S3 / ESP32-C3 — APB clock, 80 MHz (direct divisor)</option>
+                <option value="esp8266">ESP8266 — 80 MHz (direct divisor)</option>
+                <option value="avr-16">Arduino Uno / Nano / Pro Mini — 16 MHz (x16 oversampling, UBRR)</option>
+                <option value="avr-8">Arduino Pro Mini 3.3V / internal RC — 8 MHz (x16 oversampling, UBRR)</option>
+                <option value="avr-20">Arduino clone with 20 MHz crystal (x16 oversampling, UBRR)</option>
+                <option value="custom">Custom clock frequency</option>
+              </select>
+              <span class="field__hint">Determines both the clock frequency and how the divisor is calculated.</span>
+            </div>
+
+            <div class="field" data-custom-clock-field style="display:none;">
+              <label class="field__label" for="customClock">Custom clock frequency</label>
+              <div class="interval-row">
+                <input class="input" type="number" id="customClock" min="1" step="any" value="16" inputmode="decimal" />
+                <select class="select" id="customClockUnit" aria-label="Clock unit">
+                  <option value="1e6" selected>MHz</option>
+                  <option value="1e3">kHz</option>
+                  <option value="1">Hz</option>
+                </select>
+              </div>
+              <span class="field__error" data-error-for="customClock">Enter a value greater than 0.</span>
+            </div>
+
+            <div class="field" data-custom-mode-field style="display:none;">
+              <label class="field__label" for="customMode">Divisor calculation</label>
+              <select class="select" id="customMode">
+                <option value="direct">Direct divisor (baud = clock ÷ divisor)</option>
+                <option value="avr">x16 oversampling / UBRR (baud = clock ÷ (16 × (UBRR+1)))</option>
+              </select>
+            </div>
+
+            <div class="field field--full">
+              <label class="field__label" for="baudRate">Desired baud rate</label>
+              <div class="interval-row">
+                <input class="input" type="number" id="baudRate" min="1" step="any" value="115200" inputmode="numeric" />
+                <select class="select" id="baudPreset" aria-label="Common baud rate presets">
+                  <option value="">Common rates…</option>
+                  <option value="9600">9600</option>
+                  <option value="19200">19200</option>
+                  <option value="38400">38400</option>
+                  <option value="57600">57600</option>
+                  <option value="115200">115200</option>
+                  <option value="230400">230400</option>
+                  <option value="460800">460800</option>
+                  <option value="921600">921600</option>
+                  <option value="2000000">2000000</option>
+                </select>
+              </div>
+              <span class="field__hint">The baud rate you want your UART to run at.</span>
+              <span class="field__error" data-error-for="baudRate">Enter a value greater than 0.</span>
+            </div>
+
+            <div class="field field--full">
+              <label class="field__label" for="dataSize">Data size to send (optional)</label>
+              <div class="interval-row">
+                <input class="input" type="number" id="dataSize" min="0" step="any" value="1024" inputmode="decimal" />
+                <select class="select" id="dataSizeUnit" aria-label="Data size unit">
+                  <option value="1">bytes</option>
+                  <option value="1024" selected>KB</option>
+                  <option value="1048576">MB</option>
+                </select>
+              </div>
+              <span class="field__hint">Used to estimate transmission time at the actual achievable baud rate (assumes 8N1 framing — 10 bits/byte).</span>
+            </div>
+          </form>
+
+          <div class="calc__results">
+            <div class="result-row">
+              <div>
+                <div class="result-row__label">Divisor / UBRR used</div>
+                <div class="result-row__value" data-result="divisor">—</div>
+              </div>
+              <button class="btn btn--secondary btn--sm" type="button" data-copy="divisor">Copy</button>
+            </div>
+
+            <div class="result-row">
+              <div>
+                <div class="result-row__label">Actual achievable baud rate</div>
+                <div class="result-row__value" data-result="actualBaud">—</div>
+              </div>
+              <button class="btn btn--secondary btn--sm" type="button" data-copy="actualBaud">Copy</button>
+            </div>
+
+            <div class="result-row">
+              <div>
+                <div class="result-row__label">Error</div>
+                <div class="result-row__value" data-result="errorPct">—</div>
+              </div>
+              <button class="btn btn--secondary btn--sm" type="button" data-copy="errorPct">Copy</button>
+            </div>
+
+            <div class="result-row">
+              <div>
+                <div class="result-row__label">Time per bit</div>
+                <div class="result-row__value" data-result="bitTime">—</div>
+              </div>
+              <button class="btn btn--secondary btn--sm" type="button" data-copy="bitTime">Copy</button>
+            </div>
+
+            <div class="result-row">
+              <div>
+                <div class="result-row__label">Time per byte (8N1, 10 bits)</div>
+                <div class="result-row__value" data-result="byteTime">—</div>
+              </div>
+              <button class="btn btn--secondary btn--sm" type="button" data-copy="byteTime">Copy</button>
+            </div>
+
+            <div class="result-row">
+              <div>
+                <div class="result-row__label">Time to send data size</div>
+                <div class="result-row__value" data-result="transferTime">—</div>
+              </div>
+              <button class="btn btn--secondary btn--sm" type="button" data-copy="transferTime">Copy</button>
+            </div>
+
+            <div class="baud-verdict" data-baud-verdict></div>
+
+            <div class="field__error" data-calc-notice style="display:none; font-size: 0.8125rem;"></div>
+
+            <button class="btn btn--primary" type="button" data-copy-all>Copy full summary</button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============================= EXAMPLES ============================= -->
+    <section class="section section--tight container" aria-labelledby="examples-heading">
+      <h2 id="examples-heading" class="panel__title" style="margin-bottom: var(--space-2);">Examples</h2>
+      <p class="text-muted" style="margin-bottom: var(--space-5);">Pick a preset to populate the calculator above.</p>
+
+      <div class="example-grid" data-examples>
+        <button type="button" class="example-card" data-example='{"preset":"esp32-apb","baud":115200}'>
+          <span class="example-card__title">ESP32 @ 115200</span>
+          <span class="example-card__meta">Near-zero error — this is why ESP32 UART "just works"</span>
+        </button>
+        <button type="button" class="example-card" data-example='{"preset":"avr-16","baud":115200}'>
+          <span class="example-card__title">Arduino Uno @ 115200</span>
+          <span class="example-card__meta">16 MHz UBRR — a classic 2.1% error case</span>
+        </button>
+        <button type="button" class="example-card" data-example='{"preset":"avr-16","baud":250000}'>
+          <span class="example-card__title">Arduino Uno @ 250000 (exact)</span>
+          <span class="example-card__meta">One of the few high rates 16 MHz hits exactly</span>
+        </button>
+        <button type="button" class="example-card" data-example='{"preset":"avr-8","baud":57600}'>
+          <span class="example-card__title">8 MHz Pro Mini @ 57600</span>
+          <span class="example-card__meta">Common source of "garbage in Serial Monitor" reports</span>
+        </button>
+        <button type="button" class="example-card" data-example='{"preset":"esp8266","baud":921600}'>
+          <span class="example-card__title">ESP8266 @ 921600</span>
+          <span class="example-card__meta">High-speed flashing/data-logging rate</span>
+        </button>
+      </div>
+    </section>
+
+    <!-- ============================= DESCRIPTION ============================= -->
+    <section class="section section--tight container" aria-labelledby="about-heading">
+      <div class="prose">
+        <h2 id="about-heading" style="margin-top:0;">About this tool</h2>
+
+        <h3>Why UART baud rates aren't always exact</h3>
+        <p>
+          A UART doesn't generate your requested baud rate directly — it derives it from the
+          MCU's clock by dividing down to the nearest whole number, since most hardware dividers
+          can only count in integer steps. That rounding means the actual bit rate is usually
+          slightly higher or lower than what you asked for. Classic AVR chips (Arduino Uno, Nano,
+          Pro Mini) divide their clock by 16 first and then by an integer UBRR register, which is
+          why 16 MHz famously can't hit 115200 baud exactly. Chips like the ESP32 use a more
+          flexible clock divider (and on newer silicon, a fractional one), which is why ESP32
+          boards rarely show any meaningful UART error at all.
+        </p>
+
+        <h3>What this calculator does</h3>
+        <p>
+          You pick your MCU's clock source (or enter a custom clock) and type the baud rate you
+          want. It works out the actual integer divisor the hardware would use, calculates the
+          real baud rate that divisor produces, and reports the percentage error between what you
+          asked for and what you'll actually get.
+        </p>
+
+        <h3>Why 2% matters</h3>
+        <p>
+          UART has no clock line — both ends just count bit-time based on their own local baud
+          rate, so any mismatch stacks up bit by bit across each byte. The widely used rule of
+          thumb is that error under roughly ±2% is safe, since standard 8N1 framing has just
+          enough margin to still correctly sample the last bit of a byte. Go past that and you
+          start seeing scrambled characters, especially at higher baud rates where each bit
+          period is shorter and the same percentage error eats a bigger chunk of the sampling
+          window.
+        </p>
+
+        <h3>Who should use it</h3>
+        <p>
+          Anyone wiring up serial communication between an MCU and a sensor, GPS module, PC, or
+          another microcontroller — especially when picking a baud rate for an 8 MHz or 16 MHz
+          AVR chip, where far more rates land outside safe tolerance than people expect.
+        </p>
+      </div>
+    </section>
+  </main>
+
+  <!-- ============================= FOOTER ============================= -->
+  <footer class="footer">
+    <div class="container footer__inner">
+      <div class="footer__links">
+        <a class="footer__link" href="../../index.html">Homepage</a>
+        <a class="footer__link" href="../../about.html">About</a>
+        <a class="footer__link" href="../../contact.html">Contact</a>
+        <a class="footer__link" href="../../privacy.html">Privacy Policy</a>
+        <a class="footer__link" href="../../terms.html">Terms of Service</a>
+        <a class="footer__link" href="https://github.com/theNeonTerminal/PulseForge" target="_blank" rel="noopener noreferrer">GitHub</a>
+      </div>
+      <p class="footer__copy">© 2026 PulseForge. Built for the maker &amp; developer community.</p>
+    </div>
+  </footer>
+
+  <script src="../../shared/js/utils.js"></script>
+  <script src="../../shared/js/accessibility.js"></script>
+  <script src="script.js"></script>
+</body>
+</html>

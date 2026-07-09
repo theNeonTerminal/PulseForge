@@ -1,0 +1,203 @@
+// =============================================================================
+// Accessibility system: floating bubble + settings panel
+// =============================================================================
+
+.a11y-bubble {
+  @include focus-ring;
+  position: fixed;
+  z-index: 500;
+  top: 50%;
+  right: var(--space-4);
+  width: 52px;
+  height: 52px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--color-accent);
+  color: var(--color-accent-contrast);
+  border: none;
+  border-radius: 50%;
+  box-shadow: var(--shadow-md);
+  cursor: grab;
+  touch-action: none;
+  transition: background var(--transition-fast), box-shadow var(--transition-fast);
+
+  svg {
+    width: 26px;
+    height: 26px;
+  }
+
+  &:hover {
+    background: var(--color-accent-hover);
+  }
+
+  &.is-dragging {
+    cursor: grabbing;
+    transition: none;
+  }
+
+  @include reduced-motion {
+    transition: none;
+  }
+}
+
+.a11y-panel {
+  position: fixed;
+  z-index: 501;
+  top: 0;
+  right: 0;
+  height: 100%;
+  width: min(360px, 92vw);
+  background: var(--color-surface);
+  border-left: 1px solid var(--color-border);
+  box-shadow: var(--shadow-md);
+  transform: translateX(100%);
+  transition: transform var(--transition-base);
+  display: flex;
+  flex-direction: column;
+  overflow-y: auto;
+
+  &.is-open {
+    transform: translateX(0);
+  }
+
+  @include reduced-motion {
+    transition: none;
+  }
+}
+
+.a11y-panel__overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 499;
+  background: var(--color-overlay);
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity var(--transition-base);
+
+  &.is-open {
+    opacity: 1;
+    pointer-events: auto;
+  }
+
+  @include reduced-motion {
+    transition: none;
+  }
+}
+
+.a11y-panel__header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: var(--space-4) var(--space-5);
+  border-bottom: 1px solid var(--color-border);
+  position: sticky;
+  top: 0;
+  background: var(--color-surface);
+}
+
+.a11y-panel__title {
+  font-size: 1.0625rem;
+  margin: 0;
+}
+
+.a11y-panel__body {
+  padding: var(--space-5);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-6);
+}
+
+.a11y-group__title {
+  font-size: 0.8125rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: var(--color-text-muted);
+  margin-bottom: var(--space-3);
+}
+
+.a11y-choice-row {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: var(--space-2);
+}
+
+.a11y-choice-row--3 {
+  grid-template-columns: repeat(3, 1fr);
+}
+
+.a11y-choice {
+  @include focus-ring;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-1);
+  padding: var(--space-2);
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: var(--color-text-muted);
+  background: var(--color-bg-inset);
+  border: 1.5px solid var(--color-border);
+  border-radius: var(--radius-md);
+  cursor: pointer;
+  transition: border-color var(--transition-fast), color var(--transition-fast);
+
+  &:hover {
+    border-color: var(--color-border-strong);
+    color: var(--color-text);
+  }
+
+  &.is-active {
+    border-color: var(--color-accent);
+    color: var(--color-accent);
+    background: var(--color-accent-soft);
+  }
+}
+
+.a11y-swatch-row {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: var(--space-3);
+}
+
+.a11y-swatch {
+  @include focus-ring;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-2);
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  padding: var(--space-1);
+  border-radius: var(--radius-md);
+
+  &.is-active .a11y-swatch__dot {
+    box-shadow: 0 0 0 2px var(--color-surface), 0 0 0 4px var(--color-swatch, var(--color-accent));
+  }
+}
+
+.a11y-swatch__dot {
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  background: var(--color-swatch, var(--color-accent));
+  border: 1px solid rgba(0, 0, 0, 0.08);
+}
+
+.a11y-swatch__label {
+  font-size: 0.6875rem;
+  color: var(--color-text-muted);
+}
+
+.a11y-font-input {
+  margin-top: var(--space-3);
+}
+
+.a11y-panel__reset {
+  margin-top: auto;
+  padding-top: var(--space-4);
+  border-top: 1px solid var(--color-border);
+}

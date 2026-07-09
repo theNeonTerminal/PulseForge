@@ -1,0 +1,316 @@
+<!DOCTYPE html>
+<html lang="en" data-color-scheme="light" data-accent="indigo">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>ESP32 Battery Life Estimator — PulseForge</title>
+  <meta
+    name="description"
+    content="Estimate ESP32 battery life from active current, deep sleep current, wake interval and battery capacity — with a runtime breakdown chart and deep sleep presets."
+  />
+  <link rel="icon" type="image/x-icon" href="../../favicon.ico" />
+  <link rel="apple-touch-icon" href="../../logo.png" />
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <a class="skip-link" href="#main">Skip to content</a>
+
+  <!-- ============================= NAVBAR ============================= -->
+  <header class="navbar">
+    <div class="container navbar__inner">
+      <a class="navbar__brand" href="../../index.html">
+        <img class="navbar__logo" src="../../logo.png" alt="" width="32" height="32" />
+        <span>PulseForge</span>
+      </a>
+
+      <nav class="navbar__nav" aria-label="Primary">
+        <a class="navbar__link" href="../../index.html">Home</a>
+        <a class="navbar__link" href="../../about.html">About</a>
+        <a class="navbar__link" href="../../contact.html">Contact</a>
+      </nav>
+
+      <div class="navbar__actions">
+        <a class="btn btn--secondary btn--sm" href="https://github.com/theNeonTerminal/PulseForge" target="_blank" rel="noopener noreferrer">
+          <svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M12 2a10 10 0 00-3.16 19.49c.5.09.68-.22.68-.48v-1.7c-2.78.6-3.37-1.34-3.37-1.34-.46-1.16-1.11-1.47-1.11-1.47-.91-.62.07-.6.07-.6 1 .07 1.53 1.03 1.53 1.03.89 1.53 2.34 1.09 2.91.83.09-.65.35-1.09.63-1.34-2.22-.25-4.56-1.11-4.56-4.94 0-1.09.39-1.98 1.03-2.68-.1-.25-.45-1.27.1-2.65 0 0 .84-.27 2.75 1.02a9.6 9.6 0 015 0c1.91-1.29 2.75-1.02 2.75-1.02.55 1.38.2 2.4.1 2.65.64.7 1.03 1.59 1.03 2.68 0 3.84-2.34 4.68-4.57 4.93.36.31.68.92.68 1.85v2.74c0 .27.18.58.69.48A10 10 0 0012 2z" fill="currentColor"/></svg>
+          GitHub
+        </a>
+        <button class="navbar__menu-toggle" type="button" aria-label="Toggle menu" aria-expanded="false" data-menu-toggle>
+          <svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M4 7h16M4 12h16M4 17h16" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+        </button>
+      </div>
+    </div>
+    <nav class="navbar__mobile-nav container" aria-label="Primary mobile" hidden data-mobile-nav>
+      <a class="navbar__link" href="../../index.html">Home</a>
+      <a class="navbar__link" href="../../about.html">About</a>
+      <a class="navbar__link" href="../../contact.html">Contact</a>
+      <a class="navbar__link" href="https://github.com/theNeonTerminal/PulseForge" target="_blank" rel="noopener noreferrer">GitHub</a>
+    </nav>
+  </header>
+
+  <main id="main">
+    <!-- ============================= PAGE HEADER ============================= -->
+    <div class="page-header">
+      <div class="container">
+        <p class="breadcrumb">
+          <a href="../../index.html">Home</a>
+          <span aria-hidden="true">/</span>
+          <span>ESP32 Battery Life Estimator</span>
+        </p>
+        <h1 class="page-header__title">ESP32 Battery Life Estimator</h1>
+        <p class="page-header__lede">
+          Enter your current draw, sleep pattern, and battery capacity. Get an estimated
+          runtime and a breakdown of where the energy actually goes.
+        </p>
+      </div>
+    </div>
+
+    <!-- ============================= CALCULATOR ============================= -->
+    <section class="section container" aria-labelledby="calc-heading">
+      <div class="panel">
+        <h2 id="calc-heading" class="panel__title">Calculator</h2>
+        <p class="panel__lede">All fields update the estimate live. Pick a preset below to auto-fill sleep current.</p>
+
+        <div class="calc">
+          <form class="calc__form" data-calc-form novalidate>
+            <div class="field">
+              <label class="field__label" for="activeCurrent">Active current draw</label>
+              <div class="interval-row">
+                <input class="input" type="number" id="activeCurrent" min="0.01" step="any" value="120" inputmode="decimal" />
+                <span class="field__unit">mA</span>
+              </div>
+              <span class="field__hint">Wi-Fi/BLE active, sensors reading, CPU awake — typically 80–260 mA.</span>
+              <span class="field__error" data-error-for="activeCurrent">Enter a value greater than 0.</span>
+            </div>
+
+            <div class="field">
+              <label class="field__label" for="activeDuration">Active duration per wake</label>
+              <div class="interval-row">
+                <input class="input" type="number" id="activeDuration" min="0.001" step="any" value="3" inputmode="decimal" />
+                <select class="select" id="activeDurationUnit" aria-label="Active duration unit">
+                  <option value="ms">ms</option>
+                  <option value="s" selected>s</option>
+                </select>
+              </div>
+              <span class="field__hint">How long the chip stays fully awake each time it wakes up.</span>
+              <span class="field__error" data-error-for="activeDuration">Enter a value greater than 0.</span>
+            </div>
+
+            <div class="field">
+              <label class="field__label" for="sleepCurrent">Deep sleep current</label>
+              <div class="interval-row">
+                <input class="input" type="number" id="sleepCurrent" min="0" step="any" value="0.01" inputmode="decimal" />
+                <span class="field__unit">mA</span>
+              </div>
+              <span class="field__hint">Chip in deep sleep — typically 0.01–0.15 mA depending on RTC peripherals kept on.</span>
+              <span class="field__error" data-error-for="sleepCurrent">Enter a value 0 or greater.</span>
+            </div>
+
+            <div class="field field--full">
+              <label class="field__label" for="wakeInterval">Wake interval</label>
+              <div class="interval-row">
+                <input class="input" type="number" id="wakeInterval" min="0.001" step="any" value="10" inputmode="decimal" />
+                <select class="select" id="wakeIntervalUnit" aria-label="Wake interval unit">
+                  <option value="s">s</option>
+                  <option value="min" selected>min</option>
+                  <option value="hr">hr</option>
+                </select>
+              </div>
+              <span class="field__hint">How often the ESP32 wakes from deep sleep to do something.</span>
+              <span class="field__error" data-error-for="wakeInterval">Enter a value greater than 0.</span>
+            </div>
+
+            <div class="field">
+              <label class="field__label" for="batteryCapacity">Battery capacity</label>
+              <div class="interval-row">
+                <input class="input" type="number" id="batteryCapacity" min="1" step="any" value="2000" inputmode="decimal" />
+                <span class="field__unit">mAh</span>
+              </div>
+              <span class="field__hint">Rated capacity of your battery, e.g. a typical 18650 cell is ~2000–3500 mAh.</span>
+              <span class="field__error" data-error-for="batteryCapacity">Enter a value greater than 0.</span>
+            </div>
+
+            <div class="field">
+              <label class="field__label" for="usableCapacity">Usable capacity</label>
+              <div class="interval-row">
+                <input class="input" type="number" id="usableCapacity" min="1" max="100" step="1" value="85" inputmode="numeric" />
+                <span class="field__unit">%</span>
+              </div>
+              <span class="field__hint">
+                Accounts for self-discharge, regulator/LDO losses, and voltage cutoff before the rated capacity is fully used.
+              </span>
+              <span class="field__error" data-error-for="usableCapacity">Enter a whole number from 1 to 100.</span>
+            </div>
+          </form>
+
+          <div class="calc__results">
+            <div class="result-row">
+              <div>
+                <div class="result-row__label">Average current draw</div>
+                <div class="result-row__value" data-result="avgCurrent">—</div>
+              </div>
+              <button class="btn btn--secondary btn--sm" type="button" data-copy="avgCurrent">Copy</button>
+            </div>
+
+            <div class="result-row">
+              <div>
+                <div class="result-row__label">Estimated battery life</div>
+                <div class="result-row__value" data-result="batteryLife">—</div>
+              </div>
+              <button class="btn btn--secondary btn--sm" type="button" data-copy="batteryLife">Copy</button>
+            </div>
+
+            <div class="result-row">
+              <div>
+                <div class="result-row__label">Wake-ups per day</div>
+                <div class="result-row__value" data-result="wakesPerDay">—</div>
+              </div>
+              <button class="btn btn--secondary btn--sm" type="button" data-copy="wakesPerDay">Copy</button>
+            </div>
+
+            <div class="field__error" data-calc-notice style="display:none; font-size: 0.8125rem;"></div>
+
+            <div class="battery-chart" data-battery-chart aria-hidden="true">
+              <div class="battery-chart__bar">
+                <div class="battery-chart__segment battery-chart__segment--active" data-chart-active></div>
+                <div class="battery-chart__segment battery-chart__segment--sleep" data-chart-sleep></div>
+              </div>
+              <div class="battery-chart__legend">
+                <span class="battery-chart__legend-item"><span class="battery-chart__swatch battery-chart__swatch--active"></span><span data-legend-active>Active current draw — 0%</span></span>
+                <span class="battery-chart__legend-item"><span class="battery-chart__swatch battery-chart__swatch--sleep"></span><span data-legend-sleep>Deep sleep draw — 0%</span></span>
+              </div>
+              <p class="text-muted" style="font-size: 0.8125rem; margin: var(--space-2) 0 0;">
+                Share of total energy consumed by each state — not share of time, since the active
+                state usually draws 1,000×+ more current than deep sleep even though it lasts a
+                tiny fraction of the cycle.
+              </p>
+            </div>
+
+            <button class="btn btn--primary" type="button" data-copy-all>Copy full summary</button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============================= PRESETS ============================= -->
+    <section class="section section--tight container" aria-labelledby="presets-heading">
+      <h2 id="presets-heading" class="panel__title" style="margin-bottom: var(--space-2);">Deep sleep current presets</h2>
+      <p class="text-muted" style="margin-bottom: var(--space-5);">
+        Typical ESP32 deep sleep current for common RTC peripheral configurations. Click to fill
+        the "deep sleep current" field above.
+      </p>
+
+      <div class="example-grid" data-presets>
+        <button type="button" class="example-card" data-preset-current="0.01">
+          <span class="example-card__title">Deep sleep, RTC timer only</span>
+          <span class="example-card__meta">~10 µA (0.01 mA)</span>
+        </button>
+        <button type="button" class="example-card" data-preset-current="0.15">
+          <span class="example-card__title">Deep sleep + RTC memory retained</span>
+          <span class="example-card__meta">~150 µA (0.15 mA)</span>
+        </button>
+        <button type="button" class="example-card" data-preset-current="0.65">
+          <span class="example-card__title">Deep sleep + ULP coprocessor running</span>
+          <span class="example-card__meta">~650 µA (0.65 mA)</span>
+        </button>
+        <button type="button" class="example-card" data-preset-current="0.8">
+          <span class="example-card__title">Light sleep (Wi-Fi modem retained)</span>
+          <span class="example-card__meta">~0.8 mA</span>
+        </button>
+        <button type="button" class="example-card" data-preset-current="20">
+          <span class="example-card__title">Modem-sleep (CPU idle, Wi-Fi connected)</span>
+          <span class="example-card__meta">~20 mA</span>
+        </button>
+      </div>
+
+      <h3 style="margin: var(--space-6) 0 var(--space-2); font-size: 1rem;">Quick scenarios</h3>
+      <p class="text-muted" style="margin-bottom: var(--space-5);">Populate the whole form with a common project pattern.</p>
+      <div class="example-grid" data-scenarios>
+        <button type="button" class="example-card" data-scenario='{"active":150,"activeDuration":2,"activeDurationUnit":"s","sleep":0.01,"wakeInterval":15,"wakeIntervalUnit":"min","capacity":2000,"usable":85}'>
+          <span class="example-card__title">Wi-Fi sensor node</span>
+          <span class="example-card__meta">Wakes every 15 min, posts over Wi-Fi</span>
+        </button>
+        <button type="button" class="example-card" data-scenario='{"active":80,"activeDuration":50,"activeDurationUnit":"ms","sleep":0.01,"wakeInterval":1,"wakeIntervalUnit":"hr","capacity":3500,"usable":85}'>
+          <span class="example-card__title">BLE beacon</span>
+          <span class="example-card__meta">Brief BLE advert once an hour</span>
+        </button>
+        <button type="button" class="example-card" data-scenario='{"active":180,"activeDuration":4,"activeDurationUnit":"s","sleep":0.65,"wakeInterval":1,"wakeIntervalUnit":"min","capacity":1000,"usable":80}'>
+          <span class="example-card__title">Always-on ULP monitor</span>
+          <span class="example-card__meta">ULP samples every minute, wakes CPU on threshold</span>
+        </button>
+        <button type="button" class="example-card" data-scenario='{"active":200,"activeDuration":8,"activeDurationUnit":"s","sleep":0.01,"wakeInterval":10,"wakeIntervalUnit":"s","capacity":5000,"usable":85}'>
+          <span class="example-card__title">Near-continuous logging</span>
+          <span class="example-card__meta">Wakes every 10 s — battery drains fast</span>
+        </button>
+      </div>
+    </section>
+
+    <!-- ============================= DESCRIPTION ============================= -->
+    <section class="section section--tight container" aria-labelledby="about-heading">
+      <div class="prose">
+        <h2 id="about-heading" style="margin-top:0;">About this tool</h2>
+
+        <h3>Why ESP32 battery life is hard to estimate</h3>
+        <p>
+          The ESP32 spends most of its life in one of two very different power states: briefly
+          awake and drawing tens to hundreds of milliamps while it does real work, then deeply
+          asleep and drawing a few microamps until the next wake-up. A back-of-envelope estimate
+          using just one of those numbers is almost always wrong — the real battery life depends
+          on the weighted average of both, based on how long each phase actually lasts.
+        </p>
+
+        <h3>What this calculator does</h3>
+        <p>
+          You enter the active current draw and how long each wake stays active, the deep sleep
+          current, how often the chip wakes up, and your battery's capacity. It computes the
+          time-weighted average current across a full wake/sleep cycle, then divides your usable
+          battery capacity by that average to estimate total runtime in hours and days — plus a
+          chart showing what share of total energy the active phase actually consumes.
+        </p>
+
+        <h3>Why it's useful</h3>
+        <p>
+          It turns "how long will this run on a battery" from a guess into a number you can act
+          on before you commit to a battery size or a wake interval — and it usually reveals that
+          shortening the active phase matters far more for battery life than tweaking the deep
+          sleep current, since active current is often 1,000–10,000× higher.
+        </p>
+
+        <h3>Who should use it</h3>
+        <p>
+          Anyone building a battery-powered ESP32 project — sensor nodes, BLE beacons, remote
+          monitors — who needs to size a battery or decide whether a wake interval is realistic
+          before building the hardware.
+        </p>
+
+        <h3 style="margin-top: var(--space-6);">A note on accuracy</h3>
+        <p class="text-muted" style="font-size: 0.9375rem;">
+          This is a straight-line average-current model — it doesn't account for the brief
+          current spikes during Wi-Fi/BLE radio bursts, boost-converter inefficiency, or battery
+          voltage sag under load, all of which can shorten real-world runtime versus this
+          estimate. Treat the result as an optimistic upper bound and validate with a real
+          current-measurement test before finalizing a battery-powered design.
+        </p>
+      </div>
+    </section>
+  </main>
+
+  <!-- ============================= FOOTER ============================= -->
+  <footer class="footer">
+    <div class="container footer__inner">
+      <div class="footer__links">
+        <a class="footer__link" href="../../index.html">Homepage</a>
+        <a class="footer__link" href="../../about.html">About</a>
+        <a class="footer__link" href="../../contact.html">Contact</a>
+        <a class="footer__link" href="../../privacy.html">Privacy Policy</a>
+        <a class="footer__link" href="../../terms.html">Terms of Service</a>
+        <a class="footer__link" href="https://github.com/theNeonTerminal/PulseForge" target="_blank" rel="noopener noreferrer">GitHub</a>
+      </div>
+      <p class="footer__copy">© 2026 PulseForge. Built for the maker &amp; developer community.</p>
+    </div>
+  </footer>
+
+  <script src="../../shared/js/utils.js"></script>
+  <script src="../../shared/js/accessibility.js"></script>
+  <script src="script.js"></script>
+</body>
+</html>

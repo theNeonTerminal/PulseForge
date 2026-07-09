@@ -1,0 +1,895 @@
+// =============================================================================
+// Components
+// =============================================================================
+
+// --- Navbar ------------------------------------------------------------------
+
+.navbar {
+  position: sticky;
+  top: 0;
+  z-index: 40;
+  display: flex;
+  align-items: center;
+  height: 64px;
+  background: var(--color-bg);
+  border-bottom: 1px solid var(--color-border);
+  backdrop-filter: saturate(1.2) blur(6px);
+}
+
+.navbar__inner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-4);
+  width: 100%;
+}
+
+.navbar__brand {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  font-weight: 700;
+  font-size: 1.05rem;
+  color: var(--color-text);
+
+  &:hover {
+    text-decoration: none;
+    color: var(--color-text);
+  }
+}
+
+.navbar__logo {
+  width: 28px;
+  height: 28px;
+  flex-shrink: 0;
+}
+
+.navbar__nav {
+  display: none;
+  align-items: center;
+  gap: var(--space-5);
+
+  @include respond(md) {
+    display: flex;
+  }
+}
+
+.navbar__link {
+  @include focus-ring;
+  font-size: 0.9375rem;
+  font-weight: 550;
+  color: var(--color-text-muted);
+  border-radius: var(--radius-sm);
+  padding: var(--space-1) var(--space-1);
+
+  &:hover {
+    color: var(--color-text);
+    text-decoration: none;
+  }
+
+  &.is-active {
+    color: var(--color-accent);
+  }
+}
+
+.navbar__actions {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+
+  // The GitHub link is duplicated in the mobile nav below, so hide the
+  // full button here on small screens to keep the bar from crowding —
+  // only the menu toggle stays visible.
+  > .btn {
+    display: none;
+
+    @include respond(md) {
+      display: inline-flex;
+    }
+  }
+}
+
+.navbar__menu-toggle {
+  @include focus-ring;
+  display: inline-flex;
+  background: transparent;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  padding: var(--space-2);
+  color: var(--color-text);
+  cursor: pointer;
+
+  @include respond(md) {
+    display: none;
+  }
+}
+
+.navbar__mobile-nav {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-1);
+  padding: var(--space-3) 0 var(--space-4);
+  border-bottom: 1px solid var(--color-border);
+
+  &[hidden] {
+    display: none;
+  }
+
+  @include respond(md) {
+    display: none !important;
+  }
+
+  .navbar__link {
+    padding: var(--space-2) var(--space-1);
+  }
+}
+
+// --- Hero ----------------------------------------------------------------
+
+.hero {
+  position: relative;
+  padding-block: var(--space-7) var(--space-6);
+  overflow: hidden;
+
+  @include respond(md) {
+    padding-block: var(--space-8) var(--space-7);
+  }
+}
+
+// Signature decorative element: a faint circuit-trace pattern, echoing a PCB
+// silkscreen. Kept low-opacity and confined to a corner so it reads as
+// texture, never as a "flashy" background effect.
+.hero__trace {
+  position: absolute;
+  top: -40px;
+  right: -60px;
+  width: 420px;
+  height: 420px;
+  opacity: 0.5;
+  pointer-events: none;
+  color: var(--color-border-strong);
+
+  @media (prefers-reduced-motion: no-preference) {
+    transition: opacity var(--transition-base);
+  }
+
+  @media (max-width: $bp-md) {
+    width: 260px;
+    height: 260px;
+    opacity: 0.35;
+  }
+
+  @media (max-width: $bp-sm) {
+    width: 160px;
+    height: 160px;
+    opacity: 0.25;
+    top: -20px;
+    right: -40px;
+  }
+}
+
+.hero__content {
+  position: relative;
+  max-width: 640px;
+}
+
+.hero__eyebrow {
+  margin-bottom: var(--space-4);
+}
+
+.hero__title {
+  font-size: clamp(2rem, 4vw, 2.75rem);
+  margin-bottom: var(--space-4);
+}
+
+.hero__lede {
+  font-size: 1.0625rem;
+  color: var(--color-text-muted);
+  max-width: 56ch;
+  margin-bottom: var(--space-6);
+}
+
+.hero__tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-2);
+  margin-bottom: var(--space-6);
+}
+
+// --- Search ----------------------------------------------------------------
+
+.search {
+  position: relative;
+  max-width: 480px;
+}
+
+.search__icon {
+  position: absolute;
+  left: var(--space-3);
+  top: 50%;
+  transform: translateY(-50%);
+  width: 18px;
+  height: 18px;
+  color: var(--color-text-muted);
+  pointer-events: none;
+}
+
+.search__input {
+  @include focus-ring;
+  width: 100%;
+  padding: var(--space-3) var(--space-4) var(--space-3) 2.5rem;
+  font-size: 0.9375rem;
+  color: var(--color-text);
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  transition: border-color var(--transition-fast);
+
+  &::placeholder {
+    color: var(--color-text-muted);
+  }
+
+  &:hover {
+    border-color: var(--color-border-strong);
+  }
+}
+
+.search__meta {
+  margin-top: var(--space-2);
+  font-size: 0.8125rem;
+  color: var(--color-text-muted);
+}
+
+// --- Tool grid / cards -------------------------------------------------------
+
+.tool-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: var(--space-5);
+
+  @include respond(sm) {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  @include respond(lg) {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+.tool-grid__empty {
+  display: none;
+  padding: var(--space-7) var(--space-4);
+  text-align: center;
+  color: var(--color-text-muted);
+  border: 1px dashed var(--color-border);
+  border-radius: var(--radius-lg);
+
+  &.is-visible {
+    display: block;
+  }
+}
+
+// The card's top edge carries a repeating "IC pin" tick pattern, a small
+// nod to a chip's connector row. It is a 3px-tall strip, not a page-wide
+// gradient, so it stays texture rather than decoration.
+.tool-card {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  padding: var(--space-5);
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  transition: border-color var(--transition-fast), transform var(--transition-fast),
+    box-shadow var(--transition-fast);
+
+  &::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: var(--space-5);
+    right: var(--space-5);
+    height: 3px;
+    background: repeating-linear-gradient(
+      to right,
+      var(--color-accent) 0,
+      var(--color-accent) 6px,
+      transparent 6px,
+      transparent 12px
+    );
+    opacity: 0.55;
+    border-radius: 0 0 2px 2px;
+  }
+
+  &:hover {
+    border-color: var(--color-border-strong);
+    box-shadow: var(--shadow-sm);
+    transform: translateY(-1px);
+  }
+
+  &[hidden] {
+    display: none;
+  }
+}
+
+.tool-card__icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  margin-bottom: var(--space-4);
+  border-radius: var(--radius-md);
+  background: var(--color-accent-soft);
+  color: var(--color-accent);
+
+  svg {
+    width: 22px;
+    height: 22px;
+  }
+}
+
+.tool-card__title {
+  font-size: 1.0625rem;
+  margin-bottom: var(--space-2);
+}
+
+.tool-card__desc {
+  color: var(--color-text-muted);
+  font-size: 0.9375rem;
+  margin-bottom: var(--space-5);
+  flex-grow: 1;
+}
+
+.tool-card__cta {
+  align-self: flex-start;
+}
+
+// --- Footer ------------------------------------------------------------------
+
+.footer {
+  border-top: 1px solid var(--color-border);
+  padding-block: var(--space-6);
+  margin-top: var(--space-7);
+}
+
+.footer__inner {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+  align-items: flex-start;
+  justify-content: space-between;
+
+  @include respond(sm) {
+    flex-direction: row;
+    align-items: center;
+  }
+}
+
+.footer__links {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-5);
+}
+
+.footer__link {
+  font-size: 0.875rem;
+  color: var(--color-text-muted);
+
+  &:hover {
+    color: var(--color-text);
+  }
+}
+
+.footer__copy {
+  font-size: 0.8125rem;
+  color: var(--color-text-muted);
+}
+
+// --- Breadcrumb / tool page header -------------------------------------------
+
+.page-header {
+  padding-block: var(--space-6) var(--space-5);
+  border-bottom: 1px solid var(--color-border);
+}
+
+.breadcrumb {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--space-2);
+  font-size: 0.8125rem;
+  color: var(--color-text-muted);
+  margin-bottom: var(--space-3);
+
+  a {
+    color: var(--color-text-muted);
+  }
+
+  a:hover {
+    color: var(--color-accent);
+  }
+}
+
+.page-header__title {
+  font-size: clamp(1.5rem, 3vw, 2rem);
+  margin-bottom: var(--space-2);
+}
+
+.page-header__lede {
+  color: var(--color-text-muted);
+  max-width: 65ch;
+  margin-bottom: 0;
+}
+
+// --- Panel / card containers (calculator, examples) --------------------------
+
+.panel {
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  padding: var(--space-5);
+
+  @include respond(md) {
+    padding: var(--space-6);
+  }
+}
+
+.panel__title {
+  font-size: 1.25rem;
+  margin-bottom: var(--space-2);
+}
+
+.panel__lede {
+  color: var(--color-text-muted);
+  margin-bottom: var(--space-5);
+}
+
+// --- Calculator layout ---------------------------------------------------
+
+.calc {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: var(--space-6);
+
+  @include respond(lg) {
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  }
+}
+
+.calc__form {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: var(--space-1) var(--space-4);
+
+  @include respond(sm) {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+
+.calc__form .field--full {
+  @include respond(sm) {
+    grid-column: 1 / -1;
+  }
+}
+
+.calc__results {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+
+  > .btn {
+    @media (max-width: $bp-sm) {
+      width: 100%;
+    }
+  }
+}
+
+.result-row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-2) var(--space-3);
+  padding: var(--space-3) var(--space-4);
+  background: var(--color-bg-inset);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+}
+
+.result-row__label {
+  font-size: 0.8125rem;
+  color: var(--color-text-muted);
+  margin-bottom: 2px;
+}
+
+.result-row__value {
+  font-family: var(--font-mono);
+  font-size: 1rem;
+  font-weight: 600;
+}
+
+.code-block {
+  position: relative;
+  background: var(--color-code-bg);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  overflow: hidden;
+}
+
+.code-block__header {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-2);
+  padding: var(--space-2) var(--space-3);
+  border-bottom: 1px solid var(--color-border);
+  font-size: 0.75rem;
+  color: var(--color-text-muted);
+  font-family: var(--font-mono);
+}
+
+.code-block pre {
+  padding: var(--space-4);
+  font-size: 0.85rem;
+  line-height: 1.6;
+}
+
+.code-block code {
+  color: var(--color-text);
+}
+
+// --- Examples --------------------------------------------------------------
+
+.example-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: var(--space-4);
+
+  @include respond(sm) {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  @include respond(lg) {
+    grid-template-columns: repeat(4, 1fr);
+  }
+}
+
+.example-card {
+  @include focus-ring;
+  text-align: left;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+  padding: var(--space-4);
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  cursor: pointer;
+  transition: border-color var(--transition-fast), background var(--transition-fast);
+  color: var(--color-text);
+
+  &:hover {
+    border-color: var(--color-accent);
+    background: var(--color-accent-soft);
+  }
+}
+
+.example-card__title {
+  font-weight: 600;
+  font-size: 0.9375rem;
+}
+
+.example-card__meta {
+  font-size: 0.8125rem;
+  color: var(--color-text-muted);
+  font-family: var(--font-mono);
+}
+
+// --- Toast notice (copy confirmations, non-blocking) -------------------------
+
+.toast {
+  position: fixed;
+  left: 50%;
+  bottom: var(--space-6);
+  transform: translate(-50%, 8px);
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  padding: var(--space-3) var(--space-4);
+  background: var(--color-text);
+  color: var(--color-bg);
+  border-radius: var(--radius-md);
+  font-size: 0.875rem;
+  box-shadow: var(--shadow-md);
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity var(--transition-base), transform var(--transition-base);
+  z-index: 200;
+
+  &.is-visible {
+    opacity: 1;
+    transform: translate(-50%, 0);
+  }
+}
+
+// --- Board tabs (variant selector) -------------------------------------
+
+.board-tabs {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-2);
+}
+
+.board-tab {
+  @include focus-ring;
+  padding: var(--space-2) var(--space-4);
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: var(--color-text-muted);
+  background: var(--color-bg-inset);
+  border: 1.5px solid var(--color-border);
+  border-radius: 999px;
+  cursor: pointer;
+  transition: border-color var(--transition-fast), color var(--transition-fast), background var(--transition-fast);
+
+  &:hover {
+    border-color: var(--color-border-strong);
+    color: var(--color-text);
+  }
+
+  &.is-active {
+    border-color: var(--color-accent);
+    background: var(--color-accent-soft);
+    color: var(--color-accent);
+  }
+}
+
+// --- GPIO legend -------------------------------------------------------
+
+.gpio-legend {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-2) var(--space-5);
+  margin-top: var(--space-4);
+  padding-bottom: var(--space-5);
+  border-bottom: 1px solid var(--color-border);
+  font-size: 0.8125rem;
+  color: var(--color-text-muted);
+}
+
+.gpio-legend__item {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+}
+
+.gpio-legend__swatch {
+  width: 12px;
+  height: 12px;
+  border-radius: 3px;
+  flex-shrink: 0;
+  border: 1.5px solid var(--color-border-strong);
+}
+
+.gpio-legend__swatch--safe {
+  background: var(--color-surface);
+}
+
+.gpio-legend__swatch--strap {
+  background: #f2b90b;
+  border-color: #c99500;
+}
+
+.gpio-legend__swatch--caution {
+  background: var(--color-accent-soft);
+  border-color: var(--color-accent);
+}
+
+.gpio-legend__swatch--reserved {
+  background: var(--color-text-muted);
+  border-color: var(--color-text-muted);
+  opacity: 0.5;
+}
+
+.gpio-legend__swatch--input {
+  background: #cfe8ff;
+  border-color: #6badf0;
+}
+
+// --- GPIO explorer (pin grid + detail panel) --------------------------------
+
+.gpio-explorer {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: var(--space-6);
+  margin-top: var(--space-5);
+
+  @include respond(lg) {
+    grid-template-columns: minmax(0, 1.1fr) minmax(0, 1fr);
+  }
+}
+
+.gpio-explorer__pins {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--space-3);
+  align-content: start;
+
+  @media (max-width: 380px) {
+    grid-template-columns: 1fr;
+  }
+}
+
+.gpio-explorer__rail {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+}
+
+.pin-slot-label {
+  display: flex;
+  align-items: center;
+  padding: var(--space-2) var(--space-3);
+  font-family: var(--font-mono);
+  font-size: 0.8125rem;
+  font-weight: 600;
+  color: var(--color-text-muted);
+  background: var(--color-bg-inset);
+  border: 1.5px dashed var(--color-border);
+  border-radius: var(--radius-sm);
+  cursor: default;
+}
+
+.pin-chip {
+  @include focus-ring;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-2);
+  padding: var(--space-2) var(--space-3);
+  font-family: var(--font-mono);
+  font-size: 0.8125rem;
+  font-weight: 600;
+  color: var(--color-text);
+  background: var(--color-surface);
+  border: 1.5px solid var(--color-border);
+  border-left-width: 4px;
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+  transition: border-color var(--transition-fast), background var(--transition-fast), opacity var(--transition-fast);
+  text-align: left;
+
+  &:hover {
+    border-color: var(--color-border-strong);
+  }
+
+  &.is-selected {
+    border-color: var(--color-accent);
+    background: var(--color-accent-soft);
+  }
+
+  &.is-strapping {
+    border-left-color: #f2b90b;
+  }
+
+  &.is-caution {
+    border-left-color: var(--color-accent);
+  }
+
+  &.is-reserved {
+    border-left-color: var(--color-text-muted);
+    color: var(--color-text-muted);
+    cursor: not-allowed;
+    opacity: 0.6;
+  }
+
+  &.is-input-only {
+    border-left-color: #6badf0;
+  }
+
+  &.is-dimmed {
+    opacity: 0.35;
+  }
+
+  &.is-match {
+    box-shadow: var(--focus-ring);
+  }
+}
+
+.pin-chip__alt {
+  font-size: 0.6875rem;
+  font-weight: 500;
+  color: var(--color-text-muted);
+}
+
+.pin-detail {
+  padding: var(--space-5);
+  background: var(--color-bg-inset);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  align-self: start;
+}
+
+.pin-detail__title {
+  font-size: 1.125rem;
+  margin-bottom: var(--space-4);
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  font-family: var(--font-mono);
+}
+
+.pin-detail__row {
+  display: flex;
+  justify-content: space-between;
+  gap: var(--space-3);
+  padding: var(--space-2) 0;
+  border-bottom: 1px solid var(--color-border);
+  font-size: 0.875rem;
+
+  &:last-of-type {
+    border-bottom: none;
+  }
+}
+
+.pin-detail__label {
+  color: var(--color-text-muted);
+  flex-shrink: 0;
+}
+
+.pin-detail__value {
+  text-align: right;
+  font-weight: 600;
+}
+
+.pin-detail__value--yes {
+  color: var(--color-accent);
+}
+
+.pin-detail__value--caution {
+  color: #a4550a;
+}
+
+.pin-detail__value--no {
+  color: var(--color-text-muted);
+  font-weight: 500;
+}
+
+.pin-detail__notes {
+  margin-top: var(--space-4);
+  padding-top: var(--space-4);
+  border-top: 1px solid var(--color-border);
+  font-size: 0.8125rem;
+  color: var(--color-text-muted);
+
+  ul {
+    margin: var(--space-2) 0 0;
+    padding-left: 1.1em;
+  }
+
+  li {
+    margin-bottom: var(--space-1);
+  }
+}
+
+// --- Prose (tool description sections) --------------------------------------
+
+.prose {
+  max-width: 72ch;
+
+  h3 {
+    font-size: 1.125rem;
+    margin-top: var(--space-6);
+  }
+
+  ul {
+    padding-left: 1.25em;
+  }
+
+  li {
+    margin-bottom: var(--space-2);
+  }
+}

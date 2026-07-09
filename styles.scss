@@ -1,0 +1,12 @@
+// =============================================================================
+// PulseForge — Homepage styles
+// Pulls in the shared design system. Page-specific overrides (if any) live
+// at the bottom of this file only.
+// =============================================================================
+
+@import "shared/scss/variables";
+@import "shared/scss/mixins";
+@import "shared/scss/base";
+@import "shared/scss/utilities";
+@import "shared/scss/components";
+@import "shared/scss/accessibility";

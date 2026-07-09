@@ -1,0 +1,341 @@
+<!DOCTYPE html>
+<html lang="en" data-color-scheme="light" data-accent="indigo">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Arduino GPIO Reference &amp; Pin Picker — PulseForge</title>
+  <meta
+    name="description"
+    content="Pick your Arduino board, click a pin, and see instantly whether it's safe for output, PWM-capable, ADC-capable, its I2C/SPI default, and any caution notes."
+  />
+  <link rel="icon" type="image/x-icon" href="../../favicon.ico" />
+  <link rel="apple-touch-icon" href="../../logo.png" />
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <a class="skip-link" href="#main">Skip to content</a>
+
+  <!-- ============================= NAVBAR ============================= -->
+  <header class="navbar">
+    <div class="container navbar__inner">
+      <a class="navbar__brand" href="../../index.html">
+        <img class="navbar__logo" src="../../logo.png" alt="" width="32" height="32" />
+        <span>PulseForge</span>
+      </a>
+
+      <nav class="navbar__nav" aria-label="Primary">
+        <a class="navbar__link" href="../../index.html">Home</a>
+        <a class="navbar__link" href="../../about.html">About</a>
+        <a class="navbar__link" href="../../contact.html">Contact</a>
+      </nav>
+
+      <div class="navbar__actions">
+        <a class="btn btn--secondary btn--sm" href="https://github.com/theNeonTerminal/PulseForge" target="_blank" rel="noopener noreferrer">
+          <svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M12 2a10 10 0 00-3.16 19.49c.5.09.68-.22.68-.48v-1.7c-2.78.6-3.37-1.34-3.37-1.34-.46-1.16-1.11-1.47-1.11-1.47-.91-.62.07-.6.07-.6 1 .07 1.53 1.03 1.53 1.03.89 1.53 2.34 1.09 2.91.83.09-.65.35-1.09.63-1.34-2.22-.25-4.56-1.11-4.56-4.94 0-1.09.39-1.98 1.03-2.68-.1-.25-.45-1.27.1-2.65 0 0 .84-.27 2.75 1.02a9.6 9.6 0 015 0c1.91-1.29 2.75-1.02 2.75-1.02.55 1.38.2 2.4.1 2.65.64.7 1.03 1.59 1.03 2.68 0 3.84-2.34 4.68-4.57 4.93.36.31.68.92.68 1.85v2.74c0 .27.18.58.69.48A10 10 0 0012 2z" fill="currentColor"/></svg>
+          GitHub
+        </a>
+        <button class="navbar__menu-toggle" type="button" aria-label="Toggle menu" aria-expanded="false" data-menu-toggle>
+          <svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M4 7h16M4 12h16M4 17h16" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+        </button>
+      </div>
+    </div>
+    <nav class="navbar__mobile-nav container" aria-label="Primary mobile" hidden data-mobile-nav>
+      <a class="navbar__link" href="../../index.html">Home</a>
+      <a class="navbar__link" href="../../about.html">About</a>
+      <a class="navbar__link" href="../../contact.html">Contact</a>
+      <a class="navbar__link" href="https://github.com/theNeonTerminal/PulseForge" target="_blank" rel="noopener noreferrer">GitHub</a>
+    </nav>
+  </header>
+
+  <main id="main">
+    <!-- ============================= PAGE HEADER ============================= -->
+    <div class="page-header">
+      <div class="container">
+        <p class="breadcrumb">
+          <a href="../../index.html">Home</a>
+          <span aria-hidden="true">/</span>
+          <span>Arduino GPIO Reference &amp; Pin Picker</span>
+        </p>
+        <h1 class="page-header__title">Arduino GPIO Reference &amp; Pin Picker</h1>
+        <p class="page-header__lede">
+          Pick your board, click a pin, and see whether it's safe to use — before you wire
+          anything up.
+        </p>
+      </div>
+    </div>
+
+    <!-- ============================= INTERACTIVE PINOUT ============================= -->
+    <section class="section container" aria-labelledby="explorer-heading">
+      <div class="panel">
+        <h2 id="explorer-heading" class="panel__title">Interactive pinout</h2>
+
+        <div class="board-tabs" data-board-tabs role="tablist" aria-label="Arduino board">
+          <button type="button" class="board-tab is-active" data-board="uno" role="tab" aria-selected="true">Arduino Uno</button>
+          <button type="button" class="board-tab" data-board="nano" role="tab" aria-selected="false">Arduino Nano</button>
+          <button type="button" class="board-tab" data-board="promicro" role="tab" aria-selected="false">Arduino Pro Micro</button>
+          <button type="button" class="board-tab" data-board="mega2560" role="tab" aria-selected="false">Arduino Mega 2560</button>
+          <button type="button" class="board-tab" data-board="promini" role="tab" aria-selected="false">Arduino Pro Mini</button>
+        </div>
+
+        <p class="text-muted board-note" data-board-note style="margin-top: var(--space-3);"></p>
+
+        <figure class="board-diagram" data-board-diagram style="margin: var(--space-4) 0;">
+          <img data-board-diagram-img src="" alt="" loading="lazy" style="max-width: 100%; border-radius: var(--radius-md); border: 1px solid var(--color-border);" />
+          <figcaption class="text-muted" style="font-size: 0.8125rem; margin-top: var(--space-2);">
+            Pinout diagram — credit: <a data-board-diagram-credit href="#" target="_blank" rel="noopener noreferrer nofollow"></a>. Shown for reference; refer to it alongside the interactive explorer below to confirm physical pin positions.
+          </figcaption>
+        </figure>
+
+        <div class="gpio-explorer" data-gpio-explorer>
+          <div class="gpio-explorer__pins" data-pins-container>
+            <div class="gpio-explorer__rail" data-rail="a"></div>
+            <div class="gpio-explorer__rail" data-rail="b"></div>
+          </div>
+
+          <div class="gpio-explorer__detail pin-detail" data-pin-detail>
+            <p class="text-muted">Click a pin on the left to see its full profile.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============================= QUICK SCENARIOS ============================= -->
+    <section class="section section--tight container" aria-labelledby="scenarios-heading">
+      <div class="panel">
+        <h2 id="scenarios-heading" class="panel__title">Quick scenarios</h2>
+        <p class="panel__lede">Highlight every pin on the current board that fits a common need.</p>
+
+        <div class="example-grid" data-examples>
+          <button type="button" class="example-card" data-scenario="output">
+            <span class="example-card__title">General-purpose output</span>
+            <span class="example-card__meta">LEDs, relays, digital outputs</span>
+          </button>
+          <button type="button" class="example-card" data-scenario="pwm">
+            <span class="example-card__title">PWM-capable pins</span>
+            <span class="example-card__meta">Dimming, motor speed, analogWrite()</span>
+          </button>
+          <button type="button" class="example-card" data-scenario="adc">
+            <span class="example-card__title">Analog input pins</span>
+            <span class="example-card__meta">Potentiometers, analog sensors</span>
+          </button>
+          <button type="button" class="example-card" data-scenario="i2c">
+            <span class="example-card__title">I2C default pins</span>
+            <span class="example-card__meta">OLED, sensor breakout boards</span>
+          </button>
+          <button type="button" class="example-card" data-scenario="spi">
+            <span class="example-card__title">SPI default pins</span>
+            <span class="example-card__meta">SD card, TFT display, radio module</span>
+          </button>
+        </div>
+
+        <p class="field__error" data-scenario-notice style="display: none; margin-top: var(--space-4);"></p>
+        <button type="button" class="btn btn--secondary btn--sm" data-clear-scenario style="display: none; margin-top: var(--space-3);">
+          Clear highlight
+        </button>
+      </div>
+    </section>
+
+    <!-- ============================= PRO MINI PROGRAMMING HEADER ============================= -->
+    <section class="section section--tight container" data-aux-pins-section hidden aria-labelledby="aux-pins-heading">
+      <div class="panel">
+        <h2 id="aux-pins-heading" class="panel__title">Programming header (FTDI) — Pro Mini only</h2>
+        <p class="panel__lede">
+          The Pro Mini has no onboard USB — this header is where an external FTDI/USB-serial
+          adapter plugs in to upload sketches and talk over serial.
+        </p>
+        <div data-aux-pins-list></div>
+      </div>
+    </section>
+
+    <!-- ============================= PIN COMPOSER ============================= -->
+    <section class="section section--tight container" aria-labelledby="composer-heading">
+      <div class="panel">
+        <h2 id="composer-heading" class="panel__title">Pin composer</h2>
+        <p class="panel__lede">
+          Pick pins from the current board, name each one, set it as input or output, and get a
+          minimal sketch — just the variable declarations and <code>pinMode()</code> calls. Nothing else.
+        </p>
+
+        <div class="composer" data-composer>
+          <div class="composer__picker">
+            <label class="field__label" for="composerGpioSelect">Add a pin</label>
+            <div class="interval-row">
+              <select class="select" id="composerGpioSelect" data-composer-select aria-label="Choose a pin to add"></select>
+              <button class="btn btn--secondary" type="button" data-composer-add>Add pin</button>
+            </div>
+            <span class="field__hint">Only pins available on the board selected above are listed.</span>
+          </div>
+
+          <div class="composer__rows" data-composer-rows>
+            <p class="text-muted" data-composer-empty>No pins added yet — pick one above to get started.</p>
+          </div>
+
+          <div class="code-block" style="margin-top: var(--space-4);">
+            <div class="code-block__header">
+              <span>Arduino code</span>
+              <button class="btn btn--secondary btn--sm" type="button" data-composer-copy>Copy code</button>
+            </div>
+            <pre><code data-composer-code>// Add pins above to generate code.</code></pre>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============================= PIN TYPE GLOSSARY ============================= -->
+    <section class="section section--tight container" aria-labelledby="glossary-heading">
+      <h2 id="glossary-heading" class="panel__title" style="margin-bottom: var(--space-2);">Pin type glossary</h2>
+      <p class="text-muted" style="margin-bottom: var(--space-5);">
+        What each pin type actually means, with a quick visual for how it's wired.
+      </p>
+
+      <div class="example-grid" data-glossary>
+        <div class="panel" style="padding: var(--space-4);">
+          <svg viewBox="0 0 120 70" width="100%" height="70" aria-hidden="true">
+            <rect x="10" y="25" width="40" height="20" rx="3" fill="none" stroke="var(--color-accent)" stroke-width="2"/>
+            <line x1="50" y1="35" x2="100" y2="35" stroke="var(--color-accent)" stroke-width="2"/>
+            <circle cx="104" cy="35" r="5" fill="var(--color-accent)"/>
+          </svg>
+          <h3 style="margin: var(--space-2) 0 var(--space-1); font-size: 1rem;">Digital I/O</h3>
+          <p class="text-muted" style="font-size: 0.875rem; margin: 0;">
+            A pin configured in software (via <code>pinMode()</code>) as either a digital input
+            or output — HIGH/LOW only, no in-between values.
+          </p>
+        </div>
+
+        <div class="panel" style="padding: var(--space-4);">
+          <svg viewBox="0 0 120 70" width="100%" height="70" aria-hidden="true">
+            <path d="M8 50 L28 20 L48 50 L68 20 L88 50 L108 20" fill="none" stroke="var(--color-accent)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+          <h3 style="margin: var(--space-2) 0 var(--space-1); font-size: 1rem;">PWM</h3>
+          <p class="text-muted" style="font-size: 0.875rem; margin: 0;">
+            Only certain pins can fake an analog output by rapidly switching HIGH/LOW
+            (<code>analogWrite()</code>) — used for LED dimming and motor speed control. Marked
+            with a <code>~</code> on most boards' silkscreens.
+          </p>
+        </div>
+
+        <div class="panel" style="padding: var(--space-4);">
+          <svg viewBox="0 0 120 70" width="100%" height="70" aria-hidden="true">
+            <path d="M10 55 C 10 20, 50 20, 60 35 C 70 20, 110 20, 110 55" fill="none" stroke="var(--color-accent)" stroke-width="2" stroke-linecap="round"/>
+          </svg>
+          <h3 style="margin: var(--space-2) 0 var(--space-1); font-size: 1rem;">Analog input (ADC)</h3>
+          <p class="text-muted" style="font-size: 0.875rem; margin: 0;">
+            Reads a varying voltage (potentiometers, analog sensors) as a number via
+            <code>analogRead()</code> — these pins are typically labeled A0, A1, etc., separate
+            from the digital pin numbering.
+          </p>
+        </div>
+
+        <div class="panel" style="padding: var(--space-4);">
+          <svg viewBox="0 0 120 70" width="100%" height="70" aria-hidden="true">
+            <rect x="8" y="10" width="24" height="50" rx="3" fill="none" stroke="var(--color-accent)" stroke-width="2"/>
+            <line x1="32" y1="22" x2="70" y2="22" stroke="var(--color-accent)" stroke-width="2"/>
+            <line x1="32" y1="48" x2="70" y2="48" stroke="var(--color-accent)" stroke-width="2"/>
+            <circle cx="88" cy="22" r="10" fill="none" stroke="var(--color-accent)" stroke-width="2"/>
+            <circle cx="88" cy="48" r="10" fill="none" stroke="var(--color-accent)" stroke-width="2"/>
+            <text x="88" y="26" font-size="9" text-anchor="middle" fill="var(--color-accent)">D</text>
+            <text x="88" y="52" font-size="9" text-anchor="middle" fill="var(--color-accent)">D</text>
+          </svg>
+          <h3 style="margin: var(--space-2) 0 var(--space-1); font-size: 1rem;">I2C</h3>
+          <p class="text-muted" style="font-size: 0.875rem; margin: 0;">
+            A 2-wire bus (SDA for data, SCL for clock) that lets one board talk to many devices
+            on the same two pins, each with its own address — common for OLEDs and sensor
+            breakouts.
+          </p>
+        </div>
+
+        <div class="panel" style="padding: var(--space-4);">
+          <svg viewBox="0 0 120 70" width="100%" height="70" aria-hidden="true">
+            <rect x="8" y="8" width="24" height="54" rx="3" fill="none" stroke="var(--color-accent)" stroke-width="2"/>
+            <line x1="32" y1="18" x2="80" y2="18" stroke="var(--color-accent)" stroke-width="2"/>
+            <line x1="32" y1="32" x2="80" y2="32" stroke="var(--color-accent)" stroke-width="2"/>
+            <line x1="32" y1="46" x2="80" y2="46" stroke="var(--color-accent)" stroke-width="2"/>
+            <line x1="32" y1="58" x2="80" y2="58" stroke="var(--color-accent)" stroke-width="2"/>
+            <rect x="80" y="8" width="24" height="54" rx="3" fill="none" stroke="var(--color-accent)" stroke-width="2"/>
+          </svg>
+          <h3 style="margin: var(--space-2) 0 var(--space-1); font-size: 1rem;">SPI</h3>
+          <p class="text-muted" style="font-size: 0.875rem; margin: 0;">
+            A fast 4-wire bus (MOSI, MISO, SCK, SS) for one device at a time per SS line — used
+            for SD cards, TFT displays, and radio modules. Every classic AVR board has exactly
+            one SPI bus, on fixed pins.
+          </p>
+        </div>
+
+        <div class="panel" style="padding: var(--space-4);">
+          <svg viewBox="0 0 120 70" width="100%" height="70" aria-hidden="true">
+            <circle cx="30" cy="35" r="12" fill="none" stroke="var(--color-accent)" stroke-width="2"/>
+            <path d="M42 35h60" stroke="var(--color-accent)" stroke-width="2" stroke-dasharray="4 3"/>
+            <path d="M92 20l16 15-16 15" fill="none" stroke="var(--color-accent)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+          <h3 style="margin: var(--space-2) 0 var(--space-1); font-size: 1rem;">External interrupts</h3>
+          <p class="text-muted" style="font-size: 0.875rem; margin: 0;">
+            A small set of pins can trigger code immediately on a signal change
+            (<code>attachInterrupt()</code>) without waiting for the main loop to poll them —
+            useful for buttons, encoders, or timing-sensitive sensors.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============================= DESCRIPTION ============================= -->
+    <section class="section section--tight container" aria-labelledby="about-heading">
+      <div class="prose">
+        <h2 id="about-heading" style="margin-top:0;">About this tool</h2>
+
+        <h3>Why this exists</h3>
+        <p>
+          Every Arduino board has a different number of pins, a different SPI/I2C default, and a
+          different set of PWM-capable pins — details that are easy to mix up between an Uno, a
+          Pro Micro, and a Mega. This tool puts the exact capabilities of each pin one click away,
+          instead of a datasheet search.
+        </p>
+
+        <h3>What it does</h3>
+        <p>
+          Pick a board, click any pin, and see whether it's safe for general-purpose output,
+          whether it supports PWM or analog input, and its default I2C/SPI role if any. Quick
+          scenarios highlight every matching pin at once, and the Pin Composer turns a handful of
+          chosen pins straight into a bare <code>pinMode()</code> sketch skeleton you can paste
+          into your project.
+        </p>
+
+        <h3>A note on accuracy</h3>
+        <p class="text-muted" style="font-size: 0.9375rem;">
+          Pin capabilities are standard across genuine boards using these MCUs, but clones and
+          variants sometimes differ slightly in header layout — always cross-check against your
+          specific board's silkscreen before wiring anything permanent.
+        </p>
+
+        <p class="text-muted" style="font-size: 0.9375rem; margin-top: var(--space-6);">
+          <strong>PS — image credits:</strong> Arduino Uno, Nano, and Mega 2560 diagrams via
+          <a href="https://lastminuteengineers.com/" target="_blank" rel="noopener noreferrer nofollow">Last Minute Engineers</a>;
+          Pro Micro and Pro Mini diagrams via
+          <a href="https://www.theengineeringprojects.com/" target="_blank" rel="noopener noreferrer nofollow">The Engineering Projects</a>.
+          All diagrams are hotlinked from their original sources and remain their creators' work —
+          used here for reference only.
+        </p>
+      </div>
+    </section>
+  </main>
+
+  <!-- ============================= FOOTER ============================= -->
+  <footer class="footer">
+    <div class="container footer__inner">
+      <div class="footer__links">
+        <a class="footer__link" href="../../index.html">Homepage</a>
+        <a class="footer__link" href="../../about.html">About</a>
+        <a class="footer__link" href="../../contact.html">Contact</a>
+        <a class="footer__link" href="../../privacy.html">Privacy Policy</a>
+        <a class="footer__link" href="../../terms.html">Terms of Service</a>
+        <a class="footer__link" href="https://github.com/theNeonTerminal/PulseForge" target="_blank" rel="noopener noreferrer">GitHub</a>
+      </div>
+      <p class="footer__copy">© 2026 PulseForge. Built for the maker &amp; developer community.</p>
+    </div>
+  </footer>
+
+  <script src="../../shared/js/utils.js"></script>
+  <script src="../../shared/js/accessibility.js"></script>
+  <script src="pin-data.js"></script>
+  <script src="script.js"></script>
+</body>
+</html>

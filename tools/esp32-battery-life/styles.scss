@@ -1,0 +1,83 @@
+// =============================================================================
+// PulseForge — ESP32 Battery Life Estimator styles
+// Pulls in the shared design system (two levels up from this file).
+// =============================================================================
+
+@import "../../shared/scss/variables";
+@import "../../shared/scss/mixins";
+@import "../../shared/scss/base";
+@import "../../shared/scss/utilities";
+@import "../../shared/scss/components";
+@import "../../shared/scss/accessibility";
+
+// A plain, non-editable unit label sitting beside a number input (e.g. "mA").
+.interval-row .field__unit {
+  display: flex;
+  align-items: center;
+  padding: 0 var(--space-3);
+  flex: 0 0 auto;
+  font-size: 0.875rem;
+  color: var(--color-text-muted);
+  background: var(--color-bg-inset);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  white-space: nowrap;
+}
+
+// Energy-share bar chart for the battery estimator's active/sleep breakdown.
+.battery-chart {
+  margin-top: var(--space-2);
+}
+
+.battery-chart__bar {
+  display: flex;
+  width: 100%;
+  height: 28px;
+  border-radius: var(--radius-md);
+  overflow: hidden;
+  border: 1px solid var(--color-border);
+}
+
+.battery-chart__segment {
+  height: 100%;
+  transition: width 0.2s ease;
+  min-width: 0;
+}
+
+.battery-chart__segment--active {
+  background: var(--color-accent);
+}
+
+.battery-chart__segment--sleep {
+  background: var(--color-border-strong, #cbd5e1);
+}
+
+.battery-chart__legend {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-4);
+  margin-top: var(--space-2);
+  font-size: 0.8125rem;
+  color: var(--color-text-muted);
+}
+
+.battery-chart__legend-item {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+}
+
+.battery-chart__swatch {
+  display: inline-block;
+  width: 10px;
+  height: 10px;
+  border-radius: 2px;
+}
+
+.battery-chart__swatch--active {
+  background: var(--color-accent);
+}
+
+.battery-chart__swatch--sleep {
+  background: var(--color-border-strong, #cbd5e1);
+}

@@ -1,0 +1,143 @@
+// =============================================================================
+// PulseForge — Design Tokens
+// Change values here to restyle the entire site. Nothing below this file
+// should hard-code a color, font, or spacing value.
+// =============================================================================
+
+// --- Breakpoints (Sass-only, used by mixins) --------------------------------
+$bp-sm: 600px;
+$bp-md: 900px;
+$bp-lg: 1200px;
+$bp-xl: 1440px;
+
+// --- Static, theme-independent tokens (Sass variables) -----------------------
+$font-body: system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue",
+  Arial, sans-serif;
+$font-mono: ui-monospace, "SFMono-Regular", "SF Mono", Menlo, Consolas,
+  "Liberation Mono", monospace;
+
+$radius-sm: 4px;
+$radius-md: 6px;
+$radius-lg: 10px;
+
+$container-max: 1180px;
+
+// =============================================================================
+// Runtime CSS custom properties
+// These live on :root so the accessibility system (font size/family, color
+// scheme, accent hue, cursor size) can rewrite them at runtime via JS without
+// touching a single selector elsewhere in the stylesheet.
+// =============================================================================
+
+:root {
+  // Typography
+  --font-body: #{$font-body};
+  --font-mono: #{$font-mono};
+  --font-scale: 1; // multiplied by base 16px; changed by a11y panel
+
+  // Spacing scale (4px base)
+  --space-1: 0.25rem;
+  --space-2: 0.5rem;
+  --space-3: 0.75rem;
+  --space-4: 1rem;
+  --space-5: 1.5rem;
+  --space-6: 2rem;
+  --space-7: 3rem;
+  --space-8: 4.5rem;
+
+  // Radius
+  --radius-sm: #{$radius-sm};
+  --radius-md: #{$radius-md};
+  --radius-lg: #{$radius-lg};
+
+  // Motion
+  --transition-fast: 120ms ease;
+  --transition-base: 180ms cubic-bezier(0.2, 0.6, 0.2, 1);
+
+  // Focus ring — always derived from the current accent so it stays visible
+  // in every color mode, never a fixed hard-coded hue.
+  --focus-ring: 0 0 0 3px var(--color-accent-soft), 0 0 0 1.5px var(--color-accent);
+
+  // Shadows — intentionally quiet, used only for elevation on hover/menus
+  --shadow-sm: 0 1px 2px rgba(16, 24, 40, 0.06);
+  --shadow-md: 0 4px 12px rgba(16, 24, 40, 0.10);
+
+  // Cursor scale, driven by the a11y panel
+  --cursor-scale: 1;
+}
+
+// =============================================================================
+// Color scheme: Light (default) / Dark
+// data-color-scheme="light" | "dark" on <html>
+// =============================================================================
+
+:root,
+[data-color-scheme="light"] {
+  --color-bg: #ffffff;
+  --color-bg-inset: #f6f8fa;
+  --color-surface: #ffffff;
+  --color-surface-hover: #f3f4f6;
+  --color-border: #d9dee3;
+  --color-border-strong: #b9c1c9;
+  --color-text: #1b1f24;
+  --color-text-muted: #57606a;
+  --color-code-bg: #f6f8fa;
+  --color-overlay: rgba(27, 31, 36, 0.45);
+}
+
+[data-color-scheme="dark"] {
+  --color-bg: #0d1117;
+  --color-bg-inset: #10161d;
+  --color-surface: #151b23;
+  --color-surface-hover: #1c232c;
+  --color-border: #2d3541;
+  --color-border-strong: #3d4653;
+  --color-text: #e6edf3;
+  --color-text-muted: #9aa4b2;
+  --color-code-bg: #10161d;
+  --color-overlay: rgba(1, 4, 9, 0.6);
+}
+
+// =============================================================================
+// Accent hues — the accessibility panel swaps this attribute only.
+// Recolors buttons, links, active states, focus outlines, card accents and
+// navbar highlights, WITHOUT tinting backgrounds (background tokens above are
+// untouched by accent selection, keeping copy readable in every combination).
+// data-accent="indigo" (default) | "red" | "orange" | "lime" | "green" | "blue" | "aqua"
+// =============================================================================
+
+@mixin accent($base, $hover, $soft, $contrast: #ffffff) {
+  --color-accent: #{$base};
+  --color-accent-hover: #{$hover};
+  --color-accent-soft: #{$soft};
+  --color-accent-contrast: #{$contrast};
+}
+
+:root,
+[data-accent="indigo"] {
+  @include accent(#4f5bd5, #3e49b8, rgba(79, 91, 213, 0.14));
+}
+
+[data-accent="red"] {
+  @include accent(#d1373f, #b02a31, rgba(209, 55, 63, 0.14));
+}
+
+[data-accent="orange"] {
+  @include accent(#c2650a, #a4550a, rgba(194, 101, 10, 0.16));
+}
+
+[data-accent="lime"] {
+  @include accent(#5b8a11, #4a7209, rgba(91, 138, 17, 0.16), #0d1117);
+}
+
+[data-accent="green"] {
+  @include accent(#1a7f5a, #146349, rgba(26, 127, 90, 0.15));
+}
+
+[data-accent="blue"] {
+  @include accent(#0969da, #0757ba, rgba(9, 105, 218, 0.14));
+}
+
+[data-accent="aqua"] {
+  @include accent(#0f8b8d, #0c6e70, rgba(15, 139, 141, 0.15));
+}

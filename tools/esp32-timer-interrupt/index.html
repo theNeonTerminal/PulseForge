@@ -1,0 +1,272 @@
+<!DOCTYPE html>
+<html lang="en" data-color-scheme="light" data-accent="indigo">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>ESP32 Timer Interrupt Calculator — PulseForge</title>
+  <meta
+    name="description"
+    content="Turn a plain time interval into an ESP32 hardware timer prescaler, alarm value, and working timerBegin()/timerAlarm() Arduino code."
+  />
+  <link rel="icon" type="image/x-icon" href="../../favicon.ico" />
+  <link rel="apple-touch-icon" href="../../logo.png" />
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <a class="skip-link" href="#main">Skip to content</a>
+
+  <!-- ============================= NAVBAR ============================= -->
+  <header class="navbar">
+    <div class="container navbar__inner">
+      <a class="navbar__brand" href="../../index.html">
+        <img class="navbar__logo" src="../../logo.png" alt="" width="32" height="32" />
+        <span>PulseForge</span>
+      </a>
+
+      <nav class="navbar__nav" aria-label="Primary">
+        <a class="navbar__link" href="../../index.html">Home</a>
+        <a class="navbar__link" href="../../about.html">About</a>
+        <a class="navbar__link" href="../../contact.html">Contact</a>
+      </nav>
+
+      <div class="navbar__actions">
+        <a class="btn btn--secondary btn--sm" href="https://github.com/theNeonTerminal/PulseForge" target="_blank" rel="noopener noreferrer">
+          <svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M12 2a10 10 0 00-3.16 19.49c.5.09.68-.22.68-.48v-1.7c-2.78.6-3.37-1.34-3.37-1.34-.46-1.16-1.11-1.47-1.11-1.47-.91-.62.07-.6.07-.6 1 .07 1.53 1.03 1.53 1.03.89 1.53 2.34 1.09 2.91.83.09-.65.35-1.09.63-1.34-2.22-.25-4.56-1.11-4.56-4.94 0-1.09.39-1.98 1.03-2.68-.1-.25-.45-1.27.1-2.65 0 0 .84-.27 2.75 1.02a9.6 9.6 0 015 0c1.91-1.29 2.75-1.02 2.75-1.02.55 1.38.2 2.4.1 2.65.64.7 1.03 1.59 1.03 2.68 0 3.84-2.34 4.68-4.57 4.93.36.31.68.92.68 1.85v2.74c0 .27.18.58.69.48A10 10 0 0012 2z" fill="currentColor"/></svg>
+          GitHub
+        </a>
+        <button class="navbar__menu-toggle" type="button" aria-label="Toggle menu" aria-expanded="false" data-menu-toggle>
+          <svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M4 7h16M4 12h16M4 17h16" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+        </button>
+      </div>
+    </div>
+    <nav class="navbar__mobile-nav container" aria-label="Primary mobile" hidden data-mobile-nav>
+      <a class="navbar__link" href="../../index.html">Home</a>
+      <a class="navbar__link" href="../../about.html">About</a>
+      <a class="navbar__link" href="../../contact.html">Contact</a>
+      <a class="navbar__link" href="https://github.com/theNeonTerminal/PulseForge" target="_blank" rel="noopener noreferrer">GitHub</a>
+    </nav>
+  </header>
+
+  <main id="main">
+    <!-- ============================= PAGE HEADER ============================= -->
+    <div class="page-header">
+      <div class="container">
+        <p class="breadcrumb">
+          <a href="../../index.html">Home</a>
+          <span aria-hidden="true">/</span>
+          <span>ESP32 Timer Interrupt Calculator</span>
+        </p>
+        <h1 class="page-header__title">ESP32 Timer Interrupt Calculator</h1>
+        <p class="page-header__lede">
+          Type the interval you want an interrupt to fire at. Get the prescaler, the
+          alarm value, and a working <code>timerBegin()</code> / <code>timerAlarm()</code> sketch.
+        </p>
+      </div>
+    </div>
+
+    <!-- ============================= CALCULATOR ============================= -->
+    <section class="section container" aria-labelledby="calc-heading">
+      <div class="panel">
+        <h2 id="calc-heading" class="panel__title">Calculator</h2>
+        <p class="panel__lede">Enter your target interval. Results and code update as you type.</p>
+
+        <div class="calc">
+          <form class="calc__form" data-calc-form novalidate>
+            <div class="field field--full">
+              <label class="field__label" for="intervalValue">Interrupt interval</label>
+              <div class="interval-row">
+                <input class="input" type="number" id="intervalValue" min="0.001" step="any" value="500" inputmode="decimal" />
+                <select class="select" id="intervalUnit" aria-label="Interval unit">
+                  <option value="us">µs</option>
+                  <option value="ms" selected>ms</option>
+                  <option value="s">s</option>
+                </select>
+              </div>
+              <span class="field__hint">How often the interrupt should fire — e.g. 500 ms.</span>
+              <span class="field__error" data-error-for="intervalValue">Enter a value greater than 0.</span>
+            </div>
+
+            <div class="field field--full">
+              <label class="field__label" for="prescaler">Prescaler</label>
+              <div class="interval-row">
+                <input class="input" type="number" id="prescaler" min="1" max="65535" step="1" value="80" inputmode="numeric" />
+                <button class="btn btn--secondary" type="button" data-suggest-prescaler>Suggest</button>
+              </div>
+              <span class="field__hint">
+                Divides the 80 MHz APB clock down to the timer's tick frequency. 1–65535 (16-bit).
+              </span>
+              <span class="field__error" data-error-for="prescaler">Enter a whole number from 1 to 65535.</span>
+            </div>
+
+            <div class="field field--full">
+              <label class="field__checkbox-label" for="autoreload">
+                <input type="checkbox" id="autoreload" checked />
+                Auto-reload (repeat continuously, not just once)
+              </label>
+            </div>
+          </form>
+
+          <div class="calc__results">
+            <div class="result-row">
+              <div>
+                <div class="result-row__label">Timer tick frequency</div>
+                <div class="result-row__value" data-result="tickFreq">1000000 Hz (1 tick every 1 µs)</div>
+              </div>
+              <button class="btn btn--secondary btn--sm" type="button" data-copy="tickFreq">Copy</button>
+            </div>
+
+            <div class="result-row">
+              <div>
+                <div class="result-row__label">Alarm value (ticks)</div>
+                <div class="result-row__value" data-result="alarmValue">500000</div>
+              </div>
+              <button class="btn btn--secondary btn--sm" type="button" data-copy="alarmValue">Copy</button>
+            </div>
+
+            <div class="result-row">
+              <div>
+                <div class="result-row__label">Actual interval achieved</div>
+                <div class="result-row__value" data-result="actualInterval">500 ms (exact)</div>
+              </div>
+              <button class="btn btn--secondary btn--sm" type="button" data-copy="actualInterval">Copy</button>
+            </div>
+
+            <div class="field__error" data-calc-notice style="display:none; font-size: 0.8125rem;"></div>
+
+            <div class="code-block">
+              <div class="code-block__header">
+                <span>Arduino code</span>
+                <button class="btn btn--secondary btn--sm" type="button" data-copy="code">Copy code</button>
+              </div>
+              <pre><code data-result="code">hw_timer_t *timer = NULL;
+
+void IRAM_ATTR onTimer() {
+    // Your interrupt code here (keep it short!)
+}
+
+void setup() {
+    timer = timerBegin(1000000);          // 1000000 Hz tick rate (80 MHz / prescaler 80)
+    timerAttachInterrupt(timer, &onTimer);
+    timerAlarm(timer, 500000, true, 0);   // 500000 ticks = 500 ms, auto-reload, repeat forever
+}
+
+void loop() {
+
+}</code></pre>
+            </div>
+
+            <button class="btn btn--primary" type="button" data-copy-all>Copy all values + code</button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============================= EXAMPLES ============================= -->
+    <section class="section section--tight container" aria-labelledby="examples-heading">
+      <h2 id="examples-heading" class="panel__title" style="margin-bottom: var(--space-2);">Examples</h2>
+      <p class="text-muted" style="margin-bottom: var(--space-5);">Pick a preset to populate the calculator above.</p>
+
+      <div class="example-grid" data-examples>
+        <button
+          type="button"
+          class="example-card"
+          data-example='{"value":500,"unit":"ms","prescaler":80,"autoreload":true}'
+        >
+          <span class="example-card__title">Heartbeat LED</span>
+          <span class="example-card__meta">500 ms · prescaler 80</span>
+        </button>
+
+        <button
+          type="button"
+          class="example-card"
+          data-example='{"value":1,"unit":"s","prescaler":80,"autoreload":true}'
+        >
+          <span class="example-card__title">1-second clock tick</span>
+          <span class="example-card__meta">1 s · prescaler 80</span>
+        </button>
+
+        <button
+          type="button"
+          class="example-card"
+          data-example='{"value":10,"unit":"ms","prescaler":80,"autoreload":true}'
+        >
+          <span class="example-card__title">Fast sensor sampling</span>
+          <span class="example-card__meta">10 ms · prescaler 80</span>
+        </button>
+
+        <button
+          type="button"
+          class="example-card"
+          data-example='{"value":50,"unit":"us","prescaler":8,"autoreload":true}'
+        >
+          <span class="example-card__title">High-speed pulse</span>
+          <span class="example-card__meta">50 µs · prescaler 8</span>
+        </button>
+      </div>
+    </section>
+
+    <!-- ============================= DESCRIPTION ============================= -->
+    <section class="section section--tight container" aria-labelledby="about-heading">
+      <div class="prose">
+        <h2 id="about-heading" style="margin-top:0;">About this tool</h2>
+
+        <h3>What is an ESP32 timer interrupt?</h3>
+        <p>
+          The ESP32 has hardware timers that count independently of your program's
+          <code>loop()</code>. Each timer is fed by the 80 MHz APB clock through a
+          16-bit prescaler, which divides that clock down to a slower "tick" rate.
+          You then set an alarm value — the number of ticks to count before the timer
+          fires an interrupt — so it triggers at exactly the interval you want,
+          regardless of what the rest of your code is doing.
+        </p>
+
+        <h3>What this calculator does</h3>
+        <p>
+          You type a plain interval like "500 ms", and it works backward through the
+          hardware math: it divides the 80 MHz clock by your prescaler to get the tick
+          frequency, converts your interval into the matching number of ticks for the
+          alarm value, and flags any rounding so you know exactly how close the
+          achieved interval is to what you asked for. It then generates a complete
+          <code>timerBegin()</code> / <code>timerAttachInterrupt()</code> /
+          <code>timerAlarm()</code> sketch using those values.
+        </p>
+
+        <h3>Why it's useful</h3>
+        <p>
+          Prescaler-and-alarm math is one of the most commonly searched, commonly
+          botched parts of ESP32 timer setup — a wrong prescaler silently gives you an
+          interrupt that fires at the wrong rate instead of an obvious error. This tool
+          removes that guesswork and hands you a value pair that's already been
+          checked against the hardware limits.
+        </p>
+
+        <h3>Who should use it</h3>
+        <p>
+          Anyone who needs something to happen at a precise, repeating interval on an
+          ESP32 without blocking <code>loop()</code> with <code>delay()</code> —
+          sensor polling, PID control loops, non-blocking blinking, or timestamping.
+        </p>
+      </div>
+    </section>
+  </main>
+
+  <!-- ============================= FOOTER ============================= -->
+  <footer class="footer">
+    <div class="container footer__inner">
+      <div class="footer__links">
+        <a class="footer__link" href="../../index.html">Homepage</a>
+        <a class="footer__link" href="../../about.html">About</a>
+        <a class="footer__link" href="../../contact.html">Contact</a>
+        <a class="footer__link" href="../../privacy.html">Privacy Policy</a>
+        <a class="footer__link" href="../../terms.html">Terms of Service</a>
+        <a class="footer__link" href="https://github.com/theNeonTerminal/PulseForge" target="_blank" rel="noopener noreferrer">GitHub</a>
+      </div>
+      <p class="footer__copy">© 2026 PulseForge. Built for the maker &amp; developer community.</p>
+    </div>
+  </footer>
+
+  <script src="../../shared/js/utils.js"></script>
+  <script src="../../shared/js/accessibility.js"></script>
+  <script src="script.js"></script>
+</body>
+</html>

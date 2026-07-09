@@ -1,0 +1,281 @@
+<!DOCTYPE html>
+<html lang="en" data-color-scheme="light" data-accent="indigo">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>PulseForge — Utility tools for programming, Arduino &amp; ESP32</title>
+  <meta
+    name="description"
+    content="Fast, focused browser tools for embedded development: PWM calculators, Arduino helpers, and developer utilities. No sign-up, no clutter."
+  />
+  <link rel="icon" type="image/x-icon" href="favicon.ico" />
+  <link rel="apple-touch-icon" href="logo.png" />
+  <!-- Google Search Console site-ownership verification: replace with your own
+       verification meta tag before submitting to Google AdSense / Search Console.
+  <meta name="google-site-verification" content="YOUR_VERIFICATION_CODE_HERE" /> -->
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <a class="skip-link" href="#main">Skip to content</a>
+
+  <!-- ============================= NAVBAR ============================= -->
+  <header class="navbar">
+    <div class="container navbar__inner">
+      <a class="navbar__brand" href="index.html">
+        <img class="navbar__logo" src="logo.png" alt="" width="32" height="32" />
+        <span>PulseForge</span>
+      </a>
+
+      <nav class="navbar__nav" aria-label="Primary">
+        <a class="navbar__link is-active" href="index.html">Home</a>
+        <a class="navbar__link" href="about.html">About</a>
+        <a class="navbar__link" href="contact.html">Contact</a>
+      </nav>
+
+      <div class="navbar__actions">
+        <a class="btn btn--secondary btn--sm" href="https://github.com/theNeonTerminal/PulseForge" target="_blank" rel="noopener noreferrer">
+          <svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M12 2a10 10 0 00-3.16 19.49c.5.09.68-.22.68-.48v-1.7c-2.78.6-3.37-1.34-3.37-1.34-.46-1.16-1.11-1.47-1.11-1.47-.91-.62.07-.6.07-.6 1 .07 1.53 1.03 1.53 1.03.89 1.53 2.34 1.09 2.91.83.09-.65.35-1.09.63-1.34-2.22-.25-4.56-1.11-4.56-4.94 0-1.09.39-1.98 1.03-2.68-.1-.25-.45-1.27.1-2.65 0 0 .84-.27 2.75 1.02a9.6 9.6 0 015 0c1.91-1.29 2.75-1.02 2.75-1.02.55 1.38.2 2.4.1 2.65.64.7 1.03 1.59 1.03 2.68 0 3.84-2.34 4.68-4.57 4.93.36.31.68.92.68 1.85v2.74c0 .27.18.58.69.48A10 10 0 0012 2z" fill="currentColor"/></svg>
+          GitHub
+        </a>
+        <button class="navbar__menu-toggle" type="button" aria-label="Toggle menu" aria-expanded="false" data-menu-toggle>
+          <svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M4 7h16M4 12h16M4 17h16" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+        </button>
+      </div>
+    </div>
+    <nav class="navbar__mobile-nav container" aria-label="Primary mobile" hidden data-mobile-nav>
+      <a class="navbar__link" href="index.html">Home</a>
+      <a class="navbar__link" href="about.html">About</a>
+      <a class="navbar__link" href="contact.html">Contact</a>
+      <a class="navbar__link" href="https://github.com/theNeonTerminal/PulseForge" target="_blank" rel="noopener noreferrer">GitHub</a>
+    </nav>
+  </header>
+
+  <main id="main">
+    <!-- ============================= HERO ============================= -->
+    <section class="hero container">
+      <svg class="hero__trace" viewBox="0 0 420 420" fill="none" aria-hidden="true">
+        <circle cx="330" cy="60" r="4" fill="currentColor" />
+        <circle cx="330" cy="140" r="4" fill="currentColor" />
+        <circle cx="260" cy="200" r="4" fill="currentColor" />
+        <path d="M330 60v40h-70v40M330 140h-40v60" stroke="currentColor" stroke-width="1.5" fill="none" />
+        <path d="M40 380h100v-60h60v-80" stroke="currentColor" stroke-width="1.5" fill="none" />
+        <circle cx="200" cy="240" r="4" fill="currentColor" />
+        <circle cx="40" cy="380" r="4" fill="currentColor" />
+        <rect x="150" y="60" width="60" height="30" rx="3" stroke="currentColor" stroke-width="1.5" />
+      </svg>
+
+      <div class="hero__content">
+        <p class="eyebrow hero__eyebrow">Utility tools for makers &amp; developers</p>
+        <h1 class="hero__title">Small tools, built for the bench and the terminal.</h1>
+        <p class="hero__lede">
+          PulseForge is a growing set of free browser tools for programming, Arduino, ESP32
+          and general electronics work — plus everyday developer calculators. No installs,
+          no accounts, just the calculator or converter you need, right now.
+        </p>
+        <div class="hero__tags">
+          <span class="badge">Arduino</span>
+          <span class="badge">ESP32</span>
+          <span class="badge">Electronics</span>
+          <span class="badge">Dev utilities</span>
+          <span class="badge">Calculators</span>
+        </div>
+
+        <div class="search">
+          <svg class="search__icon" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+            <circle cx="11" cy="11" r="7" stroke="currentColor" stroke-width="2" />
+            <path d="M21 21l-4.3-4.3" stroke="currentColor" stroke-width="2" stroke-linecap="round" />
+          </svg>
+          <label class="visually-hidden" for="toolSearch">Search tools</label>
+          <input
+            class="search__input"
+            type="search"
+            id="toolSearch"
+            placeholder="Search tools — e.g. “PWM”, “ESP32”, “duty cycle”…"
+            autocomplete="off"
+          />
+        </div>
+        <p class="search__meta" data-search-meta aria-live="polite">1 tool available</p>
+      </div>
+    </section>
+
+    <!-- ============================= TOOL GRID ============================= -->
+    <section class="section section--tight container" aria-labelledby="tools-heading">
+      <h2 id="tools-heading" class="visually-hidden">Tools</h2>
+
+      <div class="tool-grid" data-tool-grid>
+        <!-- Reusable tool card. Copy this block to add a new tool: give it a
+             unique data-tool-id, update the icon/title/description/link, and
+             list searchable keywords in data-tags. -->
+        <article
+          class="tool-card"
+          data-tool-id="esp32-ledc-pwm"
+          data-title="ESP32 LEDC PWM Calculator"
+          data-description="Calculate ESP32 LEDC PWM frequency, resolution and duty cycle, then copy ready-to-paste Arduino code."
+          data-tags="esp32 pwm ledc duty cycle frequency arduino led servo motor gpio channel resolution"
+        >
+          <div class="tool-card__icon">
+            <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
+              <path d="M2 12h4l2-7 4 14 3-9 2 5h5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+            </svg>
+          </div>
+          <h3 class="tool-card__title">ESP32 LEDC PWM Calculator</h3>
+          <p class="tool-card__desc">
+            Work out frequency, resolution and duty-cycle values for the ESP32 LEDC peripheral,
+            then copy ready-to-paste Arduino code.
+          </p>
+          <a class="btn btn--primary tool-card__cta" href="tools/esp32-ledc-pwm/index.html">
+            Open tool
+            <svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </a>
+        </article>
+
+        <article
+          class="tool-card"
+          data-tool-id="esp32-timer-interrupt"
+          data-title="ESP32 Timer Interrupt Calculator"
+          data-description="Turn a plain time interval into an ESP32 hardware timer prescaler, alarm value, and working timerBegin()/timerAlarm() code."
+          data-tags="esp32 timer interrupt prescaler alarm timerbegin timeralarm hardware timer apb clock ticks interval microseconds milliseconds"
+        >
+          <div class="tool-card__icon">
+            <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
+              <circle cx="12" cy="13" r="8" stroke="currentColor" stroke-width="2" />
+              <path d="M12 9v4l3 2" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+              <path d="M9 2h6M12 2v2" stroke="currentColor" stroke-width="2" stroke-linecap="round" />
+            </svg>
+          </div>
+          <h3 class="tool-card__title">ESP32 Timer Interrupt Calculator</h3>
+          <p class="tool-card__desc">
+            Type an interval like "500 ms" and get the prescaler, alarm value, and a
+            working <code>timerBegin()</code> / <code>timerAlarm()</code> sketch.
+          </p>
+          <a class="btn btn--primary tool-card__cta" href="tools/esp32-timer-interrupt/index.html">
+            Open tool
+            <svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </a>
+        </article>
+
+        <article
+          class="tool-card"
+          data-tool-id="esp32-gpio-reference"
+          data-title="ESP32 GPIO Reference & Pin Picker"
+          data-description="Pick your ESP32 variant, click a pin, and see if it's safe for output, PWM/ADC/touch capable, its I2C default, and any boot restrictions."
+          data-tags="esp32 gpio pinout pin picker reference s3 c3 c6 strapping boot adc touch i2c pwm safe pins variant board select spi vspi wroom cam seeed xiao"
+        >
+          <div class="tool-card__icon">
+            <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
+              <rect x="7" y="4" width="10" height="16" rx="2" stroke="currentColor" stroke-width="2" />
+              <path d="M3 9h4M3 13h4M17 9h4M17 13h4" stroke="currentColor" stroke-width="2" stroke-linecap="round" />
+            </svg>
+          </div>
+          <h3 class="tool-card__title">ESP32 GPIO Reference &amp; Pin Picker</h3>
+          <p class="tool-card__desc">
+            Select your board variant, click a pin, and instantly see if it's safe for
+            output, PWM/ADC/touch capable, its I2C default, and any boot restrictions.
+          </p>
+          <a class="btn btn--primary tool-card__cta" href="tools/esp32-gpio-reference/index.html">
+            Open tool
+            <svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </a>
+        </article>
+
+        <article
+          class="tool-card"
+          data-tool-id="esp32-battery-life"
+          data-title="ESP32 Battery Life Estimator"
+          data-description="Enter active current, deep sleep current, wake interval, and battery capacity to estimate battery life in hours/days, with a breakdown chart and deep sleep presets."
+          data-tags="esp32 battery life estimator deep sleep low power mah current mA runtime iot presets wake interval calculator"
+        >
+          <div class="tool-card__icon">
+            <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
+              <rect x="7" y="3" width="8" height="18" rx="2" stroke="currentColor" stroke-width="2" />
+              <rect x="10" y="1" width="2" height="2" fill="currentColor" />
+              <path d="M9 15h2l-1 4 4-6h-2l1-4-4 6z" fill="currentColor" />
+            </svg>
+          </div>
+          <h3 class="tool-card__title">ESP32 Battery Life Estimator</h3>
+          <p class="tool-card__desc">
+            Enter your active and deep sleep current, wake interval, and battery capacity to
+            get an estimated runtime in hours/days, plus a chart of where the energy goes.
+          </p>
+          <a class="btn btn--primary tool-card__cta" href="tools/esp32-battery-life/index.html">
+            Open tool
+            <svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </a>
+        </article>
+
+        <article
+          class="tool-card"
+          data-tool-id="esp32-baud-rate-calculator"
+          data-title="Baud Rate & UART Error Calculator"
+          data-description="Enter CPU clock and desired baud rate to get the actual achievable baud rate, error percentage, and whether it's within safe tolerance."
+          data-tags="arduino esp32 baud rate uart error calculator ubrr serial garbage tolerance clock avr atmega"
+        >
+          <div class="tool-card__icon">
+            <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
+              <path d="M3 12h3l2-7 4 14 2-7h3" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+              <path d="M17 12h4" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+            </svg>
+          </div>
+          <h3 class="tool-card__title">Baud Rate &amp; UART Error Calculator</h3>
+          <p class="tool-card__desc">
+            Enter your CPU clock and desired baud rate to see the actual achievable rate, the
+            error percentage, and whether it's safely within the ~2% tolerance UARTs need.
+          </p>
+          <a class="btn btn--primary tool-card__cta" href="tools/esp32-baud-rate-calculator/index.html">
+            Open tool
+            <svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </a>
+        </article>
+
+        <article
+          class="tool-card"
+          data-tool-id="arduino-gpio-reference"
+          data-title="Arduino GPIO Reference & Pin Picker"
+          data-description="Select your Arduino board, click a pin, and instantly see if it's safe for output, PWM/ADC capable, its I2C/SPI default, and any caution notes."
+          data-tags="arduino uno nano pro micro mega 2560 pro mini gpio pinout pin picker reference pwm adc i2c spi interrupt"
+        >
+          <div class="tool-card__icon">
+            <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
+              <rect x="7" y="4" width="10" height="16" rx="2" stroke="currentColor" stroke-width="2" />
+              <path d="M3 9h4M3 13h4M17 9h4M17 13h4" stroke="currentColor" stroke-width="2" stroke-linecap="round" />
+            </svg>
+          </div>
+          <h3 class="tool-card__title">Arduino GPIO Reference &amp; Pin Picker</h3>
+          <p class="tool-card__desc">
+            Select your board variant, click a pin, and instantly see if it's safe for
+            output, PWM/ADC capable, its I2C/SPI default, and any caution notes.
+          </p>
+          <a class="btn btn--primary tool-card__cta" href="tools/arduino-gpio-reference/index.html">
+            Open tool
+            <svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </a>
+        </article>
+      </div>
+
+      <div class="tool-grid__empty" data-empty-state>
+        <p style="margin-bottom: 4px; color: var(--color-text); font-weight: 600;">No tools found</p>
+        <p style="margin-bottom: 0;">Try a different search term, like “PWM” or “ESP32”.</p>
+      </div>
+    </section>
+  </main>
+
+  <!-- ============================= FOOTER ============================= -->
+  <footer class="footer">
+    <div class="container footer__inner">
+      <div class="footer__links">
+        <a class="footer__link" href="index.html">Homepage</a>
+        <a class="footer__link" href="about.html">About</a>
+        <a class="footer__link" href="contact.html">Contact</a>
+        <a class="footer__link" href="privacy.html">Privacy Policy</a>
+        <a class="footer__link" href="terms.html">Terms of Service</a>
+        <a class="footer__link" href="https://github.com/theNeonTerminal/PulseForge" target="_blank" rel="noopener noreferrer">GitHub</a>
+      </div>
+      <p class="footer__copy">© 2026 PulseForge. Built for the maker &amp; developer community.</p>
+    </div>
+  </footer>
+
+  <script src="shared/js/utils.js"></script>
+  <script src="shared/js/accessibility.js"></script>
+  <script src="script.js"></script>
+</body>
+</html>

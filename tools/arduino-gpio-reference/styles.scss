@@ -1,0 +1,118 @@
+// =============================================================================
+// PulseForge — Arduino GPIO Reference & Pin Picker styles
+// Pulls in the shared design system (two levels up from this file).
+// =============================================================================
+
+@import "../../shared/scss/variables";
+@import "../../shared/scss/mixins";
+@import "../../shared/scss/base";
+@import "../../shared/scss/utilities";
+@import "../../shared/scss/components";
+@import "../../shared/scss/accessibility";
+
+// Pin composer widget
+.composer__picker {
+  margin-bottom: var(--space-4);
+}
+
+.composer__rows {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+}
+
+.composer__row {
+  display: grid;
+  grid-template-columns: 5rem 1fr 9rem auto;
+  grid-template-areas: "pin name mode remove";
+  gap: var(--space-2);
+  align-items: center;
+  padding: var(--space-2) var(--space-3);
+  background: var(--color-bg-inset);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+
+  @media (max-width: 640px) {
+    grid-template-columns: 1fr auto;
+    grid-template-areas:
+      "pin remove"
+      "name name"
+      "mode mode";
+  }
+}
+
+.composer__row-pin {
+  grid-area: pin;
+  font-weight: 600;
+  font-size: 0.875rem;
+  white-space: nowrap;
+}
+
+.composer__row-name {
+  grid-area: name;
+  min-width: 0;
+}
+
+.composer__row-mode {
+  grid-area: mode;
+  min-width: 0;
+}
+
+.composer__row [data-composer-remove] {
+  grid-area: remove;
+}
+
+.board-diagram img {
+  display: block;
+}
+
+// -----------------------------------------------------------------------
+// Mobile bottom-sheet behavior for the pin detail panel (see script.js
+// updateFloatingDetailState). Desktop (lg+) is completely unaffected.
+// -----------------------------------------------------------------------
+@media (max-width: 899px) {
+  .gpio-explorer__detail--floating {
+    position: fixed;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: 60;
+    max-height: 50vh;
+    overflow-y: auto;
+    margin: 0;
+    border-radius: var(--radius-lg, 12px) var(--radius-lg, 12px) 0 0;
+    box-shadow: 0 -8px 24px rgba(0, 0, 0, 0.18);
+    animation: pf-sheet-in 0.2s ease-out;
+  }
+}
+
+@keyframes pf-sheet-in {
+  from {
+    transform: translateY(16px);
+    opacity: 0.6;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+// Responsive tweaks for this tool's controls
+.board-tabs {
+  flex-wrap: wrap;
+}
+
+.board-tab {
+  white-space: normal;
+  word-break: break-word;
+}
+
+@media (max-width: 480px) {
+  .panel__title {
+    font-size: 1.125rem;
+  }
+
+  .example-grid {
+    grid-template-columns: 1fr;
+  }
+}
